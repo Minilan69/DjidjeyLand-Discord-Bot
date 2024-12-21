@@ -6,7 +6,7 @@ module.exports = {
   name: Events.GuildMemberAdd,
   async execute(member) {
     // Variables
-    const channelId = "1315041017875009546";
+    const channelId = "1275973666521219132";
     const channel = member.guild.channels.cache.get(channelId);
     const name =
       member.nickname ||
