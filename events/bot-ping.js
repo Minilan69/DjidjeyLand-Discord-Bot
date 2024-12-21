@@ -35,14 +35,10 @@ module.exports = {
 
         // Message
         await message.delete();
-        const messagereply = message.channel.send({
+        await message.channel.send({
           content: contentWithoutMention,
           files: attachmentUrls,
           embeds: embeds,
-        });
-        await messagereply.reply({
-          content: `✅ Message copié avec succès`,
-          ephemeral: true,
         });
       } catch (error) {
         // Error

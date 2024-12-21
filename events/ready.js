@@ -9,7 +9,7 @@ module.exports = {
     // Variables
     const launchTime = new Date();
     const channelId = "1272561844741214270";
-    const roleId = "594552679397851137";
+    const minilanId = "594552679397851137";
     const channel = client.channels.cache.get(channelId);
 
     // Console
@@ -25,7 +25,7 @@ module.exports = {
         channel.send({
           content: `✅ **${
             client.user.username
-          }** a bien été lancé à ${launchTime.toLocaleTimeString()} le ${launchTime.toLocaleDateString()} ! <@&${roleId}>`,
+          }** a bien été lancé à ${launchTime.toLocaleTimeString()} le ${launchTime.toLocaleDateString()} ! <@${minilanId}>`,
         });
       } catch (error) {
         // Error
