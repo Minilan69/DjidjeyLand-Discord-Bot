@@ -1,0 +1,12 @@
+{
+  "winMessages": [
+    "Vous avez réussi un crime et vous avez gagné **{amountWon}** <:money:1272567139760472205> !",
+    "Félicitations ! Vous avez gagné **{amountWon}** <:money:1272567139760472205> grâce à votre crime",
+    "Votre crime a porté ses fruits, vous avez gagné **{amountWon}** <:money:1272567139760472205> !"
+  ],
+  "loseMessages": [
+    "Vous avez commis un crime et perdu **{amountLost}** <:money:1272567139760472205> !",
+    "Le crime a mal tourné, vous avez perdu **{amountLost}** <:money:1272567139760472205>",
+    "Vous avez été pris ! Vous avez perdu **{amountLost}** <:money:1272567139760472205>"
+  ]
+}
