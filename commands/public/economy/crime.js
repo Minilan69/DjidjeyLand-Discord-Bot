@@ -33,10 +33,15 @@ module.exports = {
         data[userId] = { balance: 0, lastCrime: 0 };
       }
 
-      const balance = data[userId].balance;
+      let balance = data[userId].balance;
       const lastCrime = data[userId].lastCrime;
       const timePassed = Date.now() - lastCrime;
       const cooldown = ms(time);
+
+      // Verify if user have negative balance
+      if (balance < 0) {
+        balance = 0;
+      }
 
       if (timePassed < cooldown) {
         let remainingTime = ms(cooldown - timePassed, { long: true });

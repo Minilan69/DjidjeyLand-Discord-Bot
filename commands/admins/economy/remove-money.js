@@ -20,6 +20,7 @@ module.exports = {
         .setName("montant")
         .setDescription("Le montant à retirer")
         .setRequired(true)
+        .setMinValue(1)
     ),
   async execute(interaction) {
     await interaction.deferReply();
@@ -52,7 +53,6 @@ module.exports = {
 
       // Update Data
       data[userId].balance -= amount;
-      data[userId].lastWork = Date.now();
 
       fs.writeFileSync(dataFile, JSON.stringify(data));
 

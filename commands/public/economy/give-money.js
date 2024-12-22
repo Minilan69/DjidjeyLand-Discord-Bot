@@ -7,18 +7,18 @@ const {log} = require("../../../economy/economy-config.json");
 // Command
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("add-money")
-    .setDescription("Ajoute de l'argent à un membre")
+    .setName("give-money")
+    .setDescription("Permet de donner de l'argent à quelqu'un")
     .addUserOption((option) =>
         option
             .setName("membre")
-            .setDescription("Le membre à qui vous voulez ajouter de l'argent")
+            .setDescription("Le membre à qui vous voulez donner de l'argent")
             .setRequired(true)
         )
     .addIntegerOption((option) =>
         option
             .setName("montant")
-            .setDescription("Le montant à ajouter")
+            .setDescription("Le montant à donner")
             .setRequired(true)
             .setMinValue(1)
         ),
@@ -26,19 +26,35 @@ module.exports = {
     await interaction.deferReply();
 
     // Variables
-    const user = interaction.options.getUser("membre");
+    const user = interaction.user;
+    const usergive = interaction.options.getUser("membre");
     const amount = interaction.options.getInteger("montant");
 
     const userId = user.id;
     const userName = user.username;
     const userAvatar = user.displayAvatarURL({ dynamic: true });
+    const usergiveId = usergive.id;
+    const usergiveName = usergive.username;
+    const usergiveAvatar = usergive.displayAvatarURL({ dynamic: true });
     const data = JSON.parse(fs.readFileSync(dataFile));
     
 
     try {
-      // Verify if user exists
-      if (!data[userId]) {
-        data[userId] = { balance: 0 };
+      // Verify if user2 exists
+      if (!data[usergiveId]) {
+        data[usergiveId] = { balance: 0 };
+      }
+
+      // Verify if user1 have enough money
+      if (data[userId].balance < amount) {
+        const embed = new EmbedBuilder()
+          .setColor("Red")
+          .setAuthor({ name: userName, iconURL: userAvatar })
+          .setDescription(
+            `Tu n'as pas assez d'argent pour donner ${amount} <:money:1272567139760472205> à ${usergive}`
+          )
+          .setTimestamp();
+        return await interaction.editReply({ embeds: [embed] });
       }
 
       //  Embed creation
@@ -46,14 +62,15 @@ module.exports = {
         .setColor("Green")
         .setAuthor({ name: userName, iconURL: userAvatar })
         .setDescription(
-          `${amount} <:money:1272567139760472205> ont été ajoutés à ${user}`
+          `Tu as donné ${amount} <:money:1272567139760472205> à ${usergive}`
         )
         .setTimestamp();
 
       await interaction.editReply({ embeds: [embed] });
 
       // Update Data
-      data[userId].balance += amount;
+      data[userId].balance -= amount;
+      data[usergiveId].balance += amount;
 
       fs.writeFileSync(dataFile, JSON.stringify(data));
 
@@ -63,10 +80,21 @@ module.exports = {
         logChannel.send({
           embeds: [
             new EmbedBuilder()
-              .setColor("Green")
+              .setColor("Red")
               .setAuthor({ name: userName, iconURL: userAvatar })
               .setDescription(
-                `Amount : **+${amount}** <:money:1272567139760472205>\n Reason : **Add By ${interaction.user}**`
+                `Amount : **-${amount}** <:money:1272567139760472205>\n Reason : **Give To ${usergive}**`
+              )
+              .setTimestamp(),
+          ],
+        });
+        logChannel.send({
+          embeds: [
+            new EmbedBuilder()
+              .setColor("Green")
+              .setAuthor({ name: usergiveName, iconURL: usergiveAvatar })
+              .setDescription(
+                `Amount : **+${amount}** <:money:1272567139760472205>\n Reason : **Give By ${user}**`
               )
               .setTimestamp(),
           ],
