@@ -1,0 +1,20 @@
+{
+  "name": "Étoile 3",
+  "description": "Troisième étoile",
+  "price": 450,
+  "requiredRole": "1272631065080627295",
+  "actions": [
+    {
+      "type": "assignRole",
+      "roleId": "1272631077281730582"
+    },
+    {
+      "type": "removeRole",
+      "roleId": "1272631065080627295"
+    },
+    {
+      "type": "sendMessage",
+      "content": "Félicitations, vous avez acquis l'étoile 3 !"
+    }
+  ]
+}

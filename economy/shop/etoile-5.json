@@ -1,0 +1,20 @@
+{
+  "name": "Étoile 5",
+  "description": "Cinquième étoile",
+  "price": 750,
+  "requiredRole": "1272631086886682676",
+  "actions": [
+    {
+      "type": "assignRole",
+      "roleId": "1272631100707045386"
+    },
+    {
+      "type": "removeRole",
+      "roleId": "1272631086886682676"
+    },
+    {
+      "type": "sendMessage",
+      "content": "Félicitations, vous avez acquis l'étoile 5 !"
+    }
+  ]
+}
