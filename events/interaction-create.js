@@ -9,7 +9,6 @@ module.exports = {
 
     // Variables
     const allowedChannels = [
-      "1272379003151319100",
       "1272561844741214270",
       "1320411448643555431",
     ];
