@@ -35,7 +35,7 @@ module.exports = {
       const balance = data[userId].balance;
       const lastCrime = data[userId].lastCrime;
       const timePassed = Date.now() - lastCrime;
-      const cooldown = ms(`${crimeTime}h`);
+      const cooldown = ms(time);
 
       if (timePassed < cooldown) {
         let remainingTime = ms(cooldown - timePassed, { long: true });
@@ -62,8 +62,7 @@ module.exports = {
           Math.floor(Math.random() * crimeMessages.winMessages.length)
         ].replace("{amountWon}", amount);
       } else {
-        const percentage =
-          (Math.random() * crimeMaxLosePourcentage) / 100 + minLose / 100;
+        const percentage = (Math.random() * maxLose) / 100 + minLose / 100;
         const amount = Math.round(balance * percentage);
         data[userId].balance -= amount;
 

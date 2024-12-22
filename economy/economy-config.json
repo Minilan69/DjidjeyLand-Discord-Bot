@@ -2,19 +2,24 @@
     "work": {
         "min": 1,
         "max": 10,
-        "time": 4
+        "_commentTime": "h = hours, m = minutes, s = seconds",
+        "time": "4h"
     },
+
+    "collect": {
+        "money": 10,
+        "_commentTime": "h = hours, m = minutes, s = seconds",
+        "time": "23h"
+    },
+
     "crime": {
         "minWin": 1,
         "maxWin": 10,
         "_commentLose": "Is In Percentage",
         "minLose": 1, 
         "maxLose": 5,
-        "_commentTime": "is In Hours",
-        "time": 4
-    },
-    "collect": {
-        "collectMoney": 10,
-        "collectTime": 23
+        "_commentTime": "h = hours, m = minutes, s = seconds",
+        "time": "4h"
     }
+    
 }

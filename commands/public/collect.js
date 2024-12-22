@@ -5,8 +5,7 @@ const ms = require("ms");
 const dataFile = "./economy/economy-data.json";
 const messagesFile = "./economy/messages/collect-messages.json";
 const {
-  collectMoney,
-  collectTime,
+  collect: { money, time },
 } = require("../../economy/economy-config.json");
 
 // Command
@@ -32,7 +31,7 @@ module.exports = {
 
       const lastClaim = data[userId].lastClaim;
       const timePassed = Date.now() - lastClaim;
-      const cooldown = ms(`${collectTime}h`);
+      const cooldown = ms(time);
 
       if (timePassed < cooldown) {
         let remainingTime = ms(cooldown - timePassed, { long: true });
@@ -48,7 +47,7 @@ module.exports = {
 
       const randomMessage = collectMessages[
         Math.floor(Math.random() * collectMessages.length)
-      ].replace("{amount}", collectMoney);
+      ].replace("{amount}", money);
 
       //  Embed creation
       const embed = new EmbedBuilder()
@@ -60,7 +59,7 @@ module.exports = {
       await interaction.editReply({ embeds: [embed] });
 
       // Update Data
-      data[userId].balance += collectMoney;
+      data[userId].balance += money;
       data[userId].lastClaim = Date.now();
 
       fs.writeFileSync(dataFile, JSON.stringify(data));

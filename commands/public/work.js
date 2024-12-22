@@ -32,7 +32,7 @@ module.exports = {
 
       const lastWork = data[userId].lastWork;
       const timePassed = Date.now() - lastWork;
-      const cooldown = ms(`${time}h`);
+      const cooldown = ms(time);
 
       if (timePassed < cooldown) {
         let remainingTime = ms(cooldown - timePassed, { long: true });
