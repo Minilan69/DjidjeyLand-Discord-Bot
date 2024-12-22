@@ -5,11 +5,7 @@ const ms = require("ms");
 const dataFile = "./economy/economy-data.json";
 const messagesFile = "./economy/messages/crime-messages.json";
 const {
-  crimeMinWin,
-  crimeMaxWin,
-  crimeMinLosePourcentage,
-  crimeMaxLosePourcentage,
-  crimeTime,
+  crime: { minWin, maxWin, minLose, maxLose, time },
 } = require("../../economy/economy-config.json");
 
 // Command
@@ -58,8 +54,7 @@ module.exports = {
 
       if (isWin) {
         const amount =
-          Math.floor(Math.random() * (crimeMaxWin - crimeMinWin + 1)) +
-          crimeMinWin;
+          Math.floor(Math.random() * (maxWin - minWin + 1)) + minWin;
         data[userId].balance += amount;
 
         // Choose Random Message
@@ -68,8 +63,7 @@ module.exports = {
         ].replace("{amountWon}", amount);
       } else {
         const percentage =
-          (Math.random() * crimeMaxLosePourcentage) / 100 +
-          crimeMinLosePourcentage / 100;
+          (Math.random() * crimeMaxLosePourcentage) / 100 + minLose / 100;
         const amount = Math.round(balance * percentage);
         data[userId].balance -= amount;
 

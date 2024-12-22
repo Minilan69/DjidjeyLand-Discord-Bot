@@ -5,9 +5,7 @@ const ms = require("ms");
 const dataFile = "./economy/economy-data.json";
 const messagesFile = "./economy/messages/work-messages.json";
 const {
-  workMin,
-  workMax,
-  workTime,
+  work: { min, max, time },
 } = require("../../economy/economy-config.json");
 
 // Command
@@ -24,8 +22,7 @@ module.exports = {
     const userAvatar = interaction.user.displayAvatarURL({ dynamic: true });
     const data = JSON.parse(fs.readFileSync(dataFile));
     const workMessages = JSON.parse(fs.readFileSync(messagesFile));
-    const amount =
-      Math.floor(Math.random() * (workMax - workMin + 1)) + workMin;
+    const amount = Math.floor(Math.random() * (max - min + 1)) + min;
 
     try {
       // Verify if user exists
@@ -35,7 +32,7 @@ module.exports = {
 
       const lastWork = data[userId].lastWork;
       const timePassed = Date.now() - lastWork;
-      const cooldown = ms(`${workTime}h`);
+      const cooldown = ms(`${time}h`);
 
       if (timePassed < cooldown) {
         let remainingTime = ms(cooldown - timePassed, { long: true });
