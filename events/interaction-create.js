@@ -8,7 +8,11 @@ module.exports = {
     if (!interaction.isChatInputCommand()) return;
 
     // Variables
-    const allowedChannels = ["1272379003151319100", "1272561844741214270"];
+    const allowedChannels = [
+      "1272379003151319100",
+      "1272561844741214270",
+      "1320411448643555431",
+    ];
     const command = interaction.client.commands.get(interaction.commandName);
 
     // Command Not Allowed
