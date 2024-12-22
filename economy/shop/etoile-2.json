@@ -1,0 +1,20 @@
+{
+  "name": "Étoile 2",
+  "description": "Deuxième étoile, nécessite la première étoile",
+  "price": 300,
+  "requiredRole": "1272630999548952696",
+  "actions": [
+    {
+      "type": "assignRole",
+      "roleId": "1272631065080627295"
+    },
+    {
+      "type": "removeRole",
+      "roleId": "1272630999548952696"
+    },
+    {
+      "type": "sendMessage",
+      "content": "Félicitations, vous avez acquis l'étoile 2 !"
+    }
+  ]
+}

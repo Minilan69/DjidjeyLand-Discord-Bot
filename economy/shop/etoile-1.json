@@ -1,0 +1,15 @@
+{
+  "name": "Étoile 1",
+  "description": "Première étoile",
+  "price": 150,
+  "actions": [
+    {
+      "type": "assignRole",
+      "roleId": "1272630999548952696"
+    },
+    {
+      "type": "sendMessage",
+      "content": "Félicitations, vous avez acquis l'étoile 1 !"
+    }
+  ]
+}

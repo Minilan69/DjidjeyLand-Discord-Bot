@@ -1,0 +1,20 @@
+{
+  "name": "Nom dans le shop",
+  "description": "Description dans le shop",
+  "price": 150,
+  "requiredRole": "id du role requis",
+  "actions": [
+    {
+      "type": "assignRole",
+      "roleId": "id du role a donner"
+    },
+    {
+        "type": "removeRole",
+        "roleId": "id du role a enlever"
+    },
+    {
+      "type": "sendMessage",
+      "content": "le message que tu veux, pour les retour a la ligne : \n"
+    }
+  ]
+}
