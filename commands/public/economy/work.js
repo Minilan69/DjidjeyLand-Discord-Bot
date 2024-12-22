@@ -3,16 +3,16 @@ const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 const fs = require("fs");
 const ms = require("ms");
 const dataFile = "./economy/economy-data.json";
-const messagesFile = "./economy/messages/collect-messages.json";
+const messagesFile = "./economy/messages/work-messages.json";
 const {
-  collect: { money, time },
-} = require("../../economy/economy-config.json");
+  work: { min, max, time },
+} = require("../../../economy/economy-config.json");
 
 // Command
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("collect")
-    .setDescription("Réclamez votre revenu quotidien"),
+    .setName("work")
+    .setDescription("Travaillez pour gagner de l'argent"),
   async execute(interaction) {
     await interaction.deferReply();
 
@@ -21,16 +21,17 @@ module.exports = {
     const userName = interaction.user.username;
     const userAvatar = interaction.user.displayAvatarURL({ dynamic: true });
     const data = JSON.parse(fs.readFileSync(dataFile));
-    const collectMessages = JSON.parse(fs.readFileSync(messagesFile));
+    const workMessages = JSON.parse(fs.readFileSync(messagesFile));
+    const amount = Math.floor(Math.random() * (max - min + 1)) + min;
 
     try {
       // Verify if user exists
       if (!data[userId]) {
-        data[userId] = { balance: 0, lastClaim: 0 };
+        data[userId] = { balance: 0, lastWork: 0 };
       }
 
-      const lastClaim = data[userId].lastClaim;
-      const timePassed = Date.now() - lastClaim;
+      const lastWork = data[userId].lastWork;
+      const timePassed = Date.now() - lastWork;
       const cooldown = ms(time);
 
       if (timePassed < cooldown) {
@@ -45,9 +46,9 @@ module.exports = {
         );
       }
 
-      const randomMessage = collectMessages[
-        Math.floor(Math.random() * collectMessages.length)
-      ].replace("{amount}", money);
+      const randomMessage = workMessages[
+        Math.floor(Math.random() * workMessages.length)
+      ].replace("{amount}", amount);
 
       //  Embed creation
       const embed = new EmbedBuilder()
@@ -59,14 +60,14 @@ module.exports = {
       await interaction.editReply({ embeds: [embed] });
 
       // Update Data
-      data[userId].balance += money;
-      data[userId].lastClaim = Date.now();
+      data[userId].balance += amount;
+      data[userId].lastWork = Date.now();
 
       fs.writeFileSync(dataFile, JSON.stringify(data));
     } catch (error) {
       console.error("[❌ERROR]", error);
       await interaction.editReply(
-        "❌ Impossible de réclamer votre revenu quotidien"
+        "❌ Impossible de travailler pour le moment, veuillez réessayer plus tard"
       );
     }
   },

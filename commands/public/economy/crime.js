@@ -6,7 +6,7 @@ const dataFile = "./economy/economy-data.json";
 const messagesFile = "./economy/messages/crime-messages.json";
 const {
   crime: { minWin, maxWin, minLose, maxLose, time },
-} = require("../../economy/economy-config.json");
+} = require("../../../economy/economy-config.json");
 
 // Command
 module.exports = {

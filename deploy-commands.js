@@ -8,28 +8,37 @@ const path = require("path");
 async function getCommands() {
   const commands = [];
   const foldersPath = path.join(__dirname, "commands");
-  const commandFolders = fs.readdirSync(foldersPath);
+  const commandCategories = fs.readdirSync(foldersPath);
 
-  for (const folder of commandFolders) {
-    const commandsPath = path.join(foldersPath, folder);
-    const commandFiles = fs
-      .readdirSync(commandsPath)
-      .filter((file) => file.endsWith(".js"));
-    for (const file of commandFiles) {
-      const filePath = path.join(commandsPath, file);
-      const command = require(filePath);
+  for (const category of commandCategories) {
+    const categoryPath = path.join(foldersPath, category);
+    const categoryFolders = fs.readdirSync(categoryPath);
 
-      // Mods's Commands
-      if (folder === "mods") {
-        command.data.default_member_permissions =
-          PermissionsBitField.Flags.BanMembers.toString();
-      }
+    for (const folder of categoryFolders) {
+      const commandFiles = fs
+        .readdirSync(path.join(categoryPath, folder))
+        .filter((file) => file.endsWith(".js"));
 
-      // Have All Property
-      if ("data" in command && "execute" in command) {
-        commands.push(command.data.toJSON());
-      } else {
-        console.log(`[❗WARNING] ${filePath} missing property`);
+      for (const file of commandFiles) {
+        const filePath = path.join(categoryPath, folder, file);
+        const command = require(filePath);
+
+        // Set Default Permissions
+        if (category === "admins") {
+          command.data.default_member_permissions =
+            PermissionsBitField.Flags.Administrator.toString();
+        } else if (category === "mods") {
+          command.data.default_member_permissions =
+            PermissionsBitField.Flags.BanMembers.toString();
+        }
+
+        if ("data" in command && "execute" in command) {
+          commands.push(command.data.toJSON());
+        } else {
+          console.log(
+            `[❗WARNING] ${filePath} missing 'data' or 'execute' property`
+          );
+        }
       }
     }
   }
