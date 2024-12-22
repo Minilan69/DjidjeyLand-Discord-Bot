@@ -19,8 +19,8 @@ async function getCommands() {
       const filePath = path.join(commandsPath, file);
       const command = require(filePath);
 
-      // Admin's Commands
-      if (folder === "admins") {
+      // Mods's Commands
+      if (folder === "mods") {
         command.data.default_member_permissions =
           PermissionsBitField.Flags.BanMembers.toString();
       }
