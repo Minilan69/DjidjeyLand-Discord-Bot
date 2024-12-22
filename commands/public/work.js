@@ -1,9 +1,14 @@
 // Imports
-const { SlashCommandBuilder } = require("discord.js");
+const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 const fs = require("fs");
-const dataFile = "./economy.json";
 const ms = require("ms");
-const messagesFile = "./messages/work-messages.json";
+const dataFile = "./economy/economy-data.json";
+const messagesFile = "./economy/messages/work-messages.json";
+const {
+  workMin,
+  workMax,
+  workTime,
+} = require("../../economy/economy-config.json");
 
 // Command
 module.exports = {
@@ -15,9 +20,12 @@ module.exports = {
 
     // Variables
     const userId = interaction.user.id;
+    const userName = interaction.user.username;
+    const userAvatar = interaction.user.displayAvatarURL({ dynamic: true });
     const data = JSON.parse(fs.readFileSync(dataFile));
     const workMessages = JSON.parse(fs.readFileSync(messagesFile));
-    const amount = Math.floor(Math.random() * 10)+1;
+    const amount =
+      Math.floor(Math.random() * (workMax - workMin + 1)) + workMin;
 
     try {
       // Verify if user exists
@@ -27,7 +35,7 @@ module.exports = {
 
       const lastWork = data[userId].lastWork;
       const timePassed = Date.now() - lastWork;
-      const cooldown = ms("4h");
+      const cooldown = ms(`${workTime}h`);
 
       if (timePassed < cooldown) {
         let remainingTime = ms(cooldown - timePassed, { long: true });
@@ -41,17 +49,24 @@ module.exports = {
         );
       }
 
-      // Add money
-      data[userId].balance += amount;
-      data[userId].lastWork = Date.now();
-
-      fs.writeFileSync(dataFile, JSON.stringify(data));
-
       const randomMessage = workMessages[
         Math.floor(Math.random() * workMessages.length)
       ].replace("{amount}", amount);
 
-      await interaction.editReply(randomMessage);
+      //  Embed creation
+      const embed = new EmbedBuilder()
+        .setColor("Green")
+        .setAuthor({ name: userName, iconURL: userAvatar })
+        .setDescription(randomMessage)
+        .setTimestamp();
+
+      await interaction.editReply({ embeds: [embed] });
+
+      // Update Data
+      data[userId].balance += amount;
+      data[userId].lastWork = Date.now();
+
+      fs.writeFileSync(dataFile, JSON.stringify(data));
     } catch (error) {
       console.error("[❌ERROR]", error);
       await interaction.editReply(

@@ -8,7 +8,7 @@ module.exports = {
   execute(client) {
     // Variables
     const launchTime = new Date();
-    const channelId = "1272561844741214270";
+    const channelId = "1320413391793422387";
     const minilanId = "594552679397851137";
     const channel = client.channels.cache.get(channelId);
 

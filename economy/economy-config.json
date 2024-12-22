@@ -1,0 +1,14 @@
+{
+    "workMin": 1,
+    "workMax": 10,
+    "workTime": 4,
+
+    "crimeMinWin": 1,
+    "crimeMaxWin": 20,
+    "crimeMinLosePourcentage": 1,
+    "crimeMaxLosePourcentage": 5,
+    "crimeTime": 4,
+
+    "collectMoney": 10,
+    "collectTime": 23
+}

@@ -1,8 +1,13 @@
 // Imports
-const { SlashCommandBuilder } = require("discord.js");
+const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 const fs = require("fs");
-const dataFile = "./economy.json";
 const ms = require("ms");
+const dataFile = "./economy/economy-data.json";
+const messagesFile = "./economy/messages/collect-messages.json";
+const {
+  collectMoney,
+  collectTime,
+} = require("../../economy/economy-config.json");
 
 // Command
 module.exports = {
@@ -14,7 +19,10 @@ module.exports = {
 
     // Variables
     const userId = interaction.user.id;
+    const userName = interaction.user.username;
+    const userAvatar = interaction.user.displayAvatarURL({ dynamic: true });
     const data = JSON.parse(fs.readFileSync(dataFile));
+    const collectMessages = JSON.parse(fs.readFileSync(messagesFile));
 
     try {
       // Verify if user exists
@@ -24,7 +32,7 @@ module.exports = {
 
       const lastClaim = data[userId].lastClaim;
       const timePassed = Date.now() - lastClaim;
-      const cooldown = ms("23h");
+      const cooldown = ms(`${collectTime}h`);
 
       if (timePassed < cooldown) {
         let remainingTime = ms(cooldown - timePassed, { long: true });
@@ -38,15 +46,24 @@ module.exports = {
         );
       }
 
-      // Add money
-      data[userId].balance += 10;
+      const randomMessage = collectMessages[
+        Math.floor(Math.random() * collectMessages.length)
+      ].replace("{amount}", collectMoney);
+
+      //  Embed creation
+      const embed = new EmbedBuilder()
+        .setColor("Green")
+        .setAuthor({ name: userName, iconURL: userAvatar })
+        .setDescription(randomMessage)
+        .setTimestamp();
+
+      await interaction.editReply({ embeds: [embed] });
+
+      // Update Data
+      data[userId].balance += collectMoney;
       data[userId].lastClaim = Date.now();
 
       fs.writeFileSync(dataFile, JSON.stringify(data));
-
-      await interaction.editReply(
-        "💰 Vous avez réclamé votre revenu quotidien de **10 <:money:1272567139760472205>**!"
-      );
     } catch (error) {
       console.error("[❌ERROR]", error);
       await interaction.editReply(

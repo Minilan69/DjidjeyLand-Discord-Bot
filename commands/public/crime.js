@@ -1,9 +1,16 @@
 // Imports
-const { SlashCommandBuilder } = require("discord.js");
+const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 const fs = require("fs");
-const dataFile = "./economy.json";
 const ms = require("ms");
-const messagesFile = "./messages/crime-messages.json";
+const dataFile = "./economy/economy-data.json";
+const messagesFile = "./economy/messages/crime-messages.json";
+const {
+  crimeMinWin,
+  crimeMaxWin,
+  crimeMinLosePourcentage,
+  crimeMaxLosePourcentage,
+  crimeTime,
+} = require("../../economy/economy-config.json");
 
 // Command
 module.exports = {
@@ -17,9 +24,11 @@ module.exports = {
 
     // Variables
     const userId = interaction.user.id;
+    const userName = interaction.user.username;
+    const userAvatar = interaction.user.displayAvatarURL({ dynamic: true });
     const data = JSON.parse(fs.readFileSync(dataFile));
     const crimeMessages = JSON.parse(fs.readFileSync(messagesFile));
-    const balance = data[userId].balance;
+    let randomMessage;
 
     try {
       // Verify if user exists
@@ -27,9 +36,10 @@ module.exports = {
         data[userId] = { balance: 0, lastCrime: 0 };
       }
 
+      const balance = data[userId].balance;
       const lastCrime = data[userId].lastCrime;
       const timePassed = Date.now() - lastCrime;
-      const cooldown = ms("4h");
+      const cooldown = ms(`${crimeTime}h`);
 
       if (timePassed < cooldown) {
         let remainingTime = ms(cooldown - timePassed, { long: true });
@@ -44,29 +54,41 @@ module.exports = {
       }
 
       // Choose if user wins or loses
-      const isWin = Math.random() > 0.5; // 50% 
-      
-      if (isWin) {
-        const amount = Math.floor(Math.random() * 20) + 1;
+      const isWin = Math.random() > 0.5; // 50%
 
+      if (isWin) {
+        const amount =
+          Math.floor(Math.random() * (crimeMaxWin - crimeMinWin + 1)) +
+          crimeMinWin;
         data[userId].balance += amount;
-        const randomMessage = crimeMessages.winMessages[
+
+        // Choose Random Message
+        randomMessage = crimeMessages.winMessages[
           Math.floor(Math.random() * crimeMessages.winMessages.length)
         ].replace("{amountWon}", amount);
-
-        await interaction.editReply(randomMessage);
       } else {
-        const percentage = Math.random() * 0.04 + 0.01; // 1% to 5%
-
+        const percentage =
+          (Math.random() * crimeMaxLosePourcentage) / 100 +
+          crimeMinLosePourcentage / 100;
         const amount = Math.round(balance * percentage);
         data[userId].balance -= amount;
-        const randomMessage = crimeMessages.loseMessages[
+
+        // Choose Random Message
+        randomMessage = crimeMessages.loseMessages[
           Math.floor(Math.random() * crimeMessages.loseMessages.length)
         ].replace("{amountLost}", amount);
-
-        await interaction.editReply(randomMessage);
       }
 
+      //  Embed creation
+      const embed = new EmbedBuilder()
+        .setColor(isWin ? "Green" : "Red")
+        .setAuthor({ name: userName, iconURL: userAvatar })
+        .setDescription(randomMessage)
+        .setTimestamp();
+
+      await interaction.editReply({ embeds: [embed] });
+
+      // Update data
       data[userId].lastCrime = Date.now();
       fs.writeFileSync(dataFile, JSON.stringify(data));
     } catch (error) {

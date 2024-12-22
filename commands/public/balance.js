@@ -1,7 +1,7 @@
 // Imports
 const { SlashCommandBuilder } = require("discord.js");
 const fs = require("node:fs");
-const dataFile = "./economy.json";
+const dataFile = "./economy/economy-data.json";
 
 // Command
 module.exports = {
