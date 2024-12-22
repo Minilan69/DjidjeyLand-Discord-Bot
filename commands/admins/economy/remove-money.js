@@ -2,6 +2,7 @@
 const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 const fs = require("fs");
 const dataFile = "./economy/economy-data.json";
+const {log} = require("../../../economy/economy-config.json");
 
 // Command
 module.exports = {
@@ -54,6 +55,22 @@ module.exports = {
       data[userId].lastWork = Date.now();
 
       fs.writeFileSync(dataFile, JSON.stringify(data));
+
+      // Log
+      const logChannel = interaction.guild.channels.cache.get(log);
+      if (logChannel && amount != 0) {
+        logChannel.send({
+          embeds: [
+            new EmbedBuilder()
+              .setColor("Red")
+              .setAuthor({ name: userName, iconURL: userAvatar })
+              .setDescription(
+                `Amount : **-${amount}** <:money:1272567139760472205>\n Reason : **Remove By ${interaction.user}**`
+              )
+              .setTimestamp(),
+          ],
+        });
+      }
     } catch (error) {
       console.error("[❌ERROR]", error);
       await interaction.editReply("❌ Impossible de retirer de l'argent");

@@ -5,7 +5,7 @@ const ms = require("ms");
 const dataFile = "./economy/economy-data.json";
 const messagesFile = "./economy/messages/crime-messages.json";
 const {
-  crime: { minWin, maxWin, minLose, maxLose, time },
+  crime: { minWin, maxWin, minLose, maxLose, time }, log
 } = require("../../../economy/economy-config.json");
 
 // Command
@@ -25,6 +25,7 @@ module.exports = {
     const data = JSON.parse(fs.readFileSync(dataFile));
     const crimeMessages = JSON.parse(fs.readFileSync(messagesFile));
     let randomMessage;
+    let amount;
 
     try {
       // Verify if user exists
@@ -53,7 +54,7 @@ module.exports = {
       const isWin = Math.random() > 0.5; // 50%
 
       if (isWin) {
-        const amount =
+        amount =
           Math.floor(Math.random() * (maxWin - minWin + 1)) + minWin;
         data[userId].balance += amount;
 
@@ -63,7 +64,7 @@ module.exports = {
         ].replace("{amountWon}", amount);
       } else {
         const percentage = (Math.random() * maxLose) / 100 + minLose / 100;
-        const amount = Math.round(balance * percentage);
+        amount = Math.round(balance * percentage);
         data[userId].balance -= amount;
 
         // Choose Random Message
@@ -84,6 +85,24 @@ module.exports = {
       // Update data
       data[userId].lastCrime = Date.now();
       fs.writeFileSync(dataFile, JSON.stringify(data));
+
+      // Log
+      const logChannel = interaction.guild.channels.cache.get(log);
+      if (logChannel && amount != 0) {
+        logChannel.send({
+          embeds: [
+            new EmbedBuilder()
+              .setColor(isWin ? "Green" : "Red")
+              .setAuthor({ name: userName, iconURL: userAvatar })
+              .setDescription(
+                `Amount : **${
+                  isWin ? "+" : "-"
+                }${amount}** <:money:1272567139760472205>\n Reason : **Crime**`
+              )
+              .setTimestamp(),
+          ],
+        });
+      }
     } catch (error) {
       console.error("[❌ERROR]", error);
       await interaction.editReply(

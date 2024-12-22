@@ -5,7 +5,7 @@ const ms = require("ms");
 const dataFile = "./economy/economy-data.json";
 const messagesFile = "./economy/messages/collect-messages.json";
 const {
-  collect: { money, time },
+  collect: { money, time }, log
 } = require("../../../economy/economy-config.json");
 
 // Command
@@ -63,6 +63,22 @@ module.exports = {
       data[userId].lastClaim = Date.now();
 
       fs.writeFileSync(dataFile, JSON.stringify(data));
+
+      // Log
+      const logChannel = interaction.guild.channels.cache.get(log);
+      if (logChannel && money != 0) {
+        logChannel.send({
+          embeds: [
+            new EmbedBuilder()
+              .setColor("Green")
+              .setAuthor({ name: userName, iconURL: userAvatar })
+              .setDescription(
+                `Amount : **+${money}** <:money:1272567139760472205>\n Reason : **Collect**`
+              )
+              .setTimestamp(),
+          ],
+        });
+      }
     } catch (error) {
       console.error("[❌ERROR]", error);
       await interaction.editReply(

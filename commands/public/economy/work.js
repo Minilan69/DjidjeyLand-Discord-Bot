@@ -5,7 +5,7 @@ const ms = require("ms");
 const dataFile = "./economy/economy-data.json";
 const messagesFile = "./economy/messages/work-messages.json";
 const {
-  work: { min, max, time },
+  work: { min, max, time }, log
 } = require("../../../economy/economy-config.json");
 
 // Command
@@ -64,6 +64,20 @@ module.exports = {
       data[userId].lastWork = Date.now();
 
       fs.writeFileSync(dataFile, JSON.stringify(data));
+
+      // Log
+      const logChannel = interaction.guild.channels.cache.get(log);
+      if (logChannel && amount != 0) {
+        logChannel.send({
+          embeds: [
+            new EmbedBuilder()
+              .setColor("Green")
+              .setAuthor({ name: userName, iconURL: userAvatar })
+              .setDescription(`Amount : **+${amount}** <:money:1272567139760472205>\n Reason : **Work**`)
+              .setTimestamp()
+          ]
+        });
+      }
     } catch (error) {
       console.error("[❌ERROR]", error);
       await interaction.editReply(
