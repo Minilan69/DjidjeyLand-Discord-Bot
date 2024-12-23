@@ -25,7 +25,7 @@ module.exports = {
         channel.send({
           content: `✅ **${
             client.user.username
-          }** a bien été lancé à ${launchTime.toLocaleTimeString()} le ${launchTime.toLocaleDateString()} ! <@${minilanId}>`,
+          }** a bien été lancé à ${launchTime.toLocaleTimeString()} le ${launchTime.toLocaleDateString()} !`,
         });
       } catch (error) {
         // Error
