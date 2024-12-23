@@ -15,13 +15,11 @@ module.exports = {
     const publicFolderPath = path.join(__dirname, "..");
     const subFolders = fs.readdirSync(publicFolderPath);
 
-    let helpMessage = "**Liste des commandes :**\n\n";
-
     // Embed
     const embed = new EmbedBuilder()
       .setColor("#0099ff")
       .setTitle("Commandes disponibles")
-      .setDescription("Voici la liste des commandes disponibles")
+      .setDescription("Voici la liste des commandes disponibles pour les modérateurs")
       .setTimestamp();
 
     // View all commands
