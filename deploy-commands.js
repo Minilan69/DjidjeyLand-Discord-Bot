@@ -45,7 +45,7 @@ async function deployCommands() {
   return new Promise(async (resolve) => {
     Logger.wait("[Commands]", "Construction des commandes...");
     const commands = await getCommands();
-    Logger.ok("[Commands]", `${commands.length} commandes construites       `);
+    Logger.ok("[Commands]", `${commands.length} commandes construites        `);
     Logger.wait("[Commands]", "Enregistrement des commandes...");
     const { REST } = require("@discordjs/rest");
     const rest = new REST({ timeout: 60000 }).setToken(token);
@@ -58,7 +58,7 @@ async function deployCommands() {
         }
       );
 
-      Logger.ok("[Commands]", `${data.length} commandes enregistrées      `);
+      Logger.ok("[Commands]", `${data.length} commandes enregistrées           `);
       resolve();
     } catch (error) {
       // Error
