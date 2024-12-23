@@ -45,7 +45,6 @@ module.exports = function checkDependencies() {
             }
         })
         async function next(total, erroreds) {
-            console.log(`Vérification des modules (${total}/${total})...`)
             if(erroreds.size === 0) {
               console.log("Tous les modules sont présents, démarrage...")
               resolve()
