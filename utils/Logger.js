@@ -17,9 +17,9 @@ const levels = {
 // Generate Log
 function log(level, prefix, message) {
   const timestamp = getDayAndHour();
-  const formattedMessage = `[${timestamp}]${prefix}[${level.color(
+  const formattedMessage = `[${timestamp}][${prefix}][${level.color(
     level.label
-  )}]: ${message ? ` ${level.color(message)}` : ""}`;
+  )}]: ${message ? `${level.color(message)}` : ""}`;
 
   if (level === levels.ERROR || level === levels.FATAL) {
     console.error(formattedMessage);
@@ -37,9 +37,9 @@ module.exports = {
   ok: (prefix, message) => log(levels.OK, prefix, message),
   wait: (prefix, message) => {
     process.stdout.write(
-      `[${getDayAndHour()}]${prefix}[${levels.WAIT.color(
+      `[${getDayAndHour()}][${prefix}][${levels.WAIT.color(
         levels.WAIT.label
-      )}]: ${message ? ` ${message}` : ""}\r`
+      )}]: ${message ? `${message}` : ""}\r`
     );
   },
   fatal: async (err) => {

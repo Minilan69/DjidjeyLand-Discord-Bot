@@ -4,7 +4,7 @@ const { Events, AttachmentBuilder } = require("discord.js");
 // Event Responde
 module.exports = {
   name: Events.GuildMemberAdd,
-  async execute(member) {
+  async execute(member, client) {
     // Variables
     const channelId = "1275973666521219132";
     const channel = member.guild.channels.cache.get(channelId);
@@ -52,10 +52,10 @@ Profite bien de ton aventure ici ! 🌟`,
         embeds: [embed],
         files: [footer],
       });
-      console.log(`[✅PASS] ${member.user.tag} join server`);
+      client.logger.ok("[Join]", `${member.user.tag} join server`);
     } catch (error) {
       // Error
-      console.error("[❌ERROR]", error);
+      client.logger.error("[Join]", error);
     }
   },
 };

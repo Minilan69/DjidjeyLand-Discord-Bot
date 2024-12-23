@@ -28,10 +28,10 @@ async function getCommands() {
           commands.push(command.data.toJSON());
         } else {
           Logger.error(
-            "[Commands]",
+            "DeployCommands",
             `${filePath}: il manque les propriétés "data" ou "execute"`
           );
-          Logger.wait("[Commands]", "Construction des commandes...");
+          Logger.wait("DeployCommands", "Construction des commandes...");
         }
       }
     }
@@ -43,10 +43,13 @@ async function getCommands() {
 // Update Commands
 async function deployCommands() {
   return new Promise(async (resolve) => {
-    Logger.wait("[Commands]", "Construction des commandes...");
+    Logger.wait("DeployCommands", "Construction des commandes...");
     const commands = await getCommands();
-    Logger.ok("[Commands]", `${commands.length} commandes construites       `);
-    Logger.wait("[Commands]", "Enregistrement des commandes...");
+    Logger.ok(
+      "DeployCommands",
+      `${commands.length} commandes construites       `
+    );
+    Logger.wait("DeployCommands", "Enregistrement des commandes...");
     const { REST } = require("@discordjs/rest");
     const rest = new REST({ timeout: 60000 }).setToken(token);
 
@@ -58,15 +61,18 @@ async function deployCommands() {
         }
       );
 
-      Logger.ok("[Commands]", `${data.length} commandes enregistrées      `);
+      Logger.ok(
+        "DeployCommands",
+        `${data.length} commandes enregistrées      `
+      );
       resolve();
     } catch (error) {
       // Error
       Logger.error(
-        "[Commands]",
+        "DeployCommands",
         "Une erreur est survenue lors de l'enregistrement des commandes"
       );
-      Logger.error("[Commands]", error);
+      Logger.error("DeployCommands", error);
       process.exit(1);
     }
   });

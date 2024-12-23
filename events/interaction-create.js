@@ -6,6 +6,7 @@ module.exports = {
   name: Events.InteractionCreate,
   async execute(interaction) {
     if (!interaction.isChatInputCommand()) return;
+    const client = interaction.client
 
     // Variables
     const allowedChannels = [
@@ -25,8 +26,9 @@ module.exports = {
 
     // Command Don't Exist
     if (!command) {
-      console.error(
-        `[❌ERROR] ${interaction.commandName} no command with this name`
+      client.logger.error(
+        "[Command]",
+        `${interaction.commandName} no command with this name`
       );
       return;
     }
@@ -34,9 +36,13 @@ module.exports = {
     try {
       // Command Execution
       await command.execute(interaction);
-      console.log(`[✅PASS] ${interaction.commandName}.js sucseed`);
+      client.logger.ok("[Command]", `${interaction.commandName}.js sucseed`);
     } catch (error) {
       // Error
+      client.logger.error(
+        "[Command]",
+        error
+      );
       console.error(error);
       if (interaction.replied || interaction.deferred) {
         await interaction.followUp({

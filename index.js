@@ -9,9 +9,9 @@ const path = require("node:path");
 const { Client, Collection, Events, GatewayIntentBits } = require("discord.js");
 const logger = require("./utils/Logger.js");
 if (!fs.existsSync("./config.json")) {
-  logger.error("[Config]", "Aucun fichier de configuration trouvé");
+  logger.error("Index", "Aucun fichier de configuration trouvé");
   logger.info(
-    "[Config]",
+    "Index",
     "Assurez-vous d'avoir copié le fichier config-exemple.json en config.json"
   );
   process.exit(1);
@@ -21,8 +21,8 @@ var config = fs.readFileSync("./config.json");
 try {
   config = JSON.parse(config);
 } catch (err) {
-  logger.error("[Config]", "Impossible de lire le fichier config.json");
-  logger.error("[Config]", err);
+  logger.error("Index", "Impossible de lire le fichier config.json");
+  logger.error("Index", err);
   process.exit(1);
 }
 
@@ -89,14 +89,14 @@ for (const file of eventFiles) {
 }
 
 // Bot
-logger.wait("[Login]", "Connexion en cours...");
+logger.wait("Index", "Connexion en cours...");
 client
   .login(config.token)
   .then(() => {
-    logger.ok("[Login]", "Connecté");
+    logger.ok("Index", "Connecté");
   })
   .catch((err) => {
-    logger.err("[Login]", "Échec de la connexion");
-    logger.err("[Login]", err);
+    logger.err("Index", "Échec de la connexion");
+    logger.err("Index", err);
     process.exit(1);
   });
