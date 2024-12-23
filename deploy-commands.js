@@ -63,7 +63,7 @@ async function deployCommands() {
 
       Logger.ok(
         "DeployCommands",
-        `${data.length} commandes enregistrées      `
+        `${data.length} commandes enregistrées        `
       );
       resolve();
     } catch (error) {

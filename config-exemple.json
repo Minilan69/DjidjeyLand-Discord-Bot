@@ -8,7 +8,7 @@
     "_readyMessageComment": "placeholder disponibles : {time} {date} {botName} - pour désactiver la fonctionnalité laisser le channel vide"
   },
   "log": {
-    "message": "[date][time][prefix][label]: message",
-    "_logMessageComment": "placeholder disponibles : {date} {time} {prefix} {label} {message} - pour désactiver la fonctionnalité laisser le channel vide"
+    "message": "[{date}][{time}][{prefix}][{label}]: {message}",
+    "_logMessageComment": "placeholder disponibles : {date} {time} {prefix} {label} {message}"
   }
 }
