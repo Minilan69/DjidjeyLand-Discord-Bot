@@ -1,8 +1,19 @@
+(async() => {
+  let checkDependencies = require("./util/checkDependencies.js")
+  await checkDependencies()
+})()
+
 // Imports
 const fs = require("node:fs");
 const path = require("node:path");
 const { Client, Collection, Events, GatewayIntentBits } = require("discord.js");
-const { token } = require("./config.json");
+const logger = require("./util/Logger")
+if(!fs.existsSync("./config.json")) {
+  logger.error("[Config]", "Aucun fichier de configuration trouvé")
+  logger.info("[Config]", "Assurez-vous d'avoir copié le fichier config-exemple.json en config.json")
+  process.exit(1)
+}
+
 const { deployCommands } = require("./deploy-commands");
 
 // Client
