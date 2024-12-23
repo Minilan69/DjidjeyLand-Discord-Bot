@@ -36,15 +36,13 @@ const client = new Client({
   ],
 });
 
-client.logger = logger
-client.config = config
+client.logger = logger;
+client.config = config;
 
 // Commands
-try {
-  deployCommands();
-} catch (error) {
-  console.error("[❌ERROR]", error);
-}
+(async() => {
+  await deployCommands()
+})()
 
 client.commands = new Collection();
 const foldersPath = path.join(__dirname, "commands");
