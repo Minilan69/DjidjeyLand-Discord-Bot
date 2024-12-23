@@ -80,7 +80,7 @@ module.exports = {
         });
       }
     } catch (error) {
-      console.error("[❌ERROR]", error);
+      interaction.client.logger.error("Collect", error);
       await interaction.editReply(
         "❌ Impossible de réclamer votre revenu quotidien"
       );

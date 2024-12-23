@@ -74,7 +74,7 @@ module.exports = {
         });
       }
     } catch (error) {
-      console.error("[❌ERROR]", error);
+      interaction.client.logger.error("AddMoney", error);
       await interaction.editReply(
         "❌ Impossible d'ajouter de l'argent"
       );

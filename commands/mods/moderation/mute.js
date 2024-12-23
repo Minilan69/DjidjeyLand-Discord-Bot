@@ -82,7 +82,7 @@ module.exports = {
       );
     } catch (error) {
       // Error
-      console.error("[❌ERROR]", error);
+      interaction.client.logger.error("Mute", error);
       await interaction.editReply("❌ Impossible de mute le membre");
     }
   },

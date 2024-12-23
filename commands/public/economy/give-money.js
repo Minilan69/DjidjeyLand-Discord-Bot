@@ -101,7 +101,7 @@ module.exports = {
         });
       }
     } catch (error) {
-      console.error("[❌ERROR]", error);
+      interaction.client.logger.error("GiveMoney", error);
       await interaction.editReply(
         "❌ Impossible d'ajouter de l'argent"
       );

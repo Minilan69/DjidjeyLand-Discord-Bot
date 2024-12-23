@@ -63,7 +63,7 @@ module.exports = {
         Raison: ${reason}`);
     } catch (error) {
       // Error
-      console.error("[❌ERROR]", error);
+      interaction.client.logger.error("Ban", error);
       await interaction.editReply("❌ Impossible de ban le membre");
     }
   },

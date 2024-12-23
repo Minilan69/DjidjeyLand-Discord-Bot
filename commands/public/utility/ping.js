@@ -33,7 +33,7 @@ module.exports = {
       );
     } catch (error) {
       // Error
-      console.error("[❌ERROR]", error);
+      interaction.client.logger.error("Ping", error);
       await interaction.editReply("❌ Impossible de ping");
     }
   },

@@ -12,6 +12,8 @@ module.exports = {
   async execute(interaction) {
     await interaction.deferReply();
 
+    const client = interaction.client;
+
     const publicFolderPath = path.join(__dirname, "..");
     const subFolders = fs.readdirSync(publicFolderPath);
 
@@ -40,7 +42,10 @@ module.exports = {
           if ("data" in command && "execute" in command) {
             fieldValue += `\`/${command.data.name}\` - ${command.data.description}\n`;
           } else {
-            console.log(`[❗WARNING] ${filePath} missing property`);
+            client.logger.warn(
+              "Help",
+              `[❗WARNING] ${filePath} missing property`
+            );
           }
         }
 

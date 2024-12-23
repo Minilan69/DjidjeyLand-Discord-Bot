@@ -109,7 +109,7 @@ module.exports = {
         });
       }
     } catch (error) {
-      console.error("[❌ERROR]", error);
+      interaction.client.logger.error("Crime", error);
       await interaction.editReply(
         "❌ Impossible de commettre un crime pour le moment, veuillez réessayer plus tard"
       );

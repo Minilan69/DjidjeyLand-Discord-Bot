@@ -79,7 +79,7 @@ module.exports = {
         });
       }
     } catch (error) {
-      console.error("[❌ERROR]", error);
+      interaction.client.logger.error("Work", error);
       await interaction.editReply(
         "❌ Impossible de travailler pour le moment, veuillez réessayer plus tard"
       );

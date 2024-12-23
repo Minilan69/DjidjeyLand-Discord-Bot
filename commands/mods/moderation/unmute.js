@@ -75,7 +75,7 @@ module.exports = {
       );
     } catch (error) {
       // Error
-      console.error("[❌ERROR]", error);
+      interaction.client.logger.error("Unmute", error);
       await interaction.editReply("❌ Impossible de unmute le membre");
     }
   },

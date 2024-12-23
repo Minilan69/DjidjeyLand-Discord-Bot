@@ -170,7 +170,7 @@ module.exports = {
         });
       }
     } catch (error) {
-      console.error("[❌ERROR]", error);
+      interaction.client.logger.error("Buy", error);
       return interaction.editReply(
         `❌ Une erreur est survenue lors de l'achat de **${selectedItem.name}**. Veuillez réessayer plus tard`
       );

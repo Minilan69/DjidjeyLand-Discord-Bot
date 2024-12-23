@@ -40,6 +40,7 @@ module.exports = {
           files: attachmentUrls,
           embeds: embeds,
         });
+        message.client.logger.ok("BotPing", `${message.member.user.username} sent a message`);
       } catch (error) {
         // Error
         console.error("[❌ERROR]", error);

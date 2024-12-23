@@ -51,7 +51,7 @@ module.exports = {
       await interaction.editReply({ embeds: [embed] });
     } catch (error) {
       // Error
-      console.error("[❌ERROR]", error);
+      interaction.client.logger.error("Balance", error);
       await interaction.editReply("❌ Impossible de récupérer le solde");
     }
   },

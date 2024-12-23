@@ -27,7 +27,7 @@ module.exports = {
     // Command Don't Exist
     if (!command) {
       client.logger.error(
-        "CommandCreate",
+        "Commands",
         `${interaction.commandName} no command with this name`
       );
       return;
@@ -37,12 +37,12 @@ module.exports = {
       // Command Execution
       await command.execute(interaction);
       client.logger.ok(
-        "CommandCreate",
+        "Commands",
         `${interaction.commandName}.js sucseed`
       );
     } catch (error) {
       // Error
-      client.logger.error("CommandCreate", error);
+      client.logger.error("Commands", error);
       console.error(error);
       if (interaction.replied || interaction.deferred) {
         await interaction.followUp({
