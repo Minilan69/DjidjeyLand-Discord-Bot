@@ -1,5 +1,5 @@
 // Imports
-const { SlashCommandBuilder } = require("discord.js");
+const { SlashCommandBuilder, PermissionsBitField } = require("discord.js");
 
 // Command
 module.exports = {
@@ -17,7 +17,8 @@ module.exports = {
         .setName("raison")
         .setDescription("La raison du unmute")
         .setRequired(true)
-    ),
+    )
+    .setDefaultMemberPermissions(PermissionsBitField.Flags.MuteMembers),
   // Execution
   async execute(interaction) {
     await interaction.deferReply();

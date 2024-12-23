@@ -1,5 +1,5 @@
 // Imports
-const { SlashCommandBuilder } = require("discord.js");
+const { SlashCommandBuilder, PermissionsBitField } = require("discord.js");
 
 // Command
 module.exports = {
@@ -13,7 +13,8 @@ module.exports = {
         .setRequired(true)
         .setMinValue(1)
         .setMaxValue(100)
-    ),
+    )
+    .setDefaultMemberPermissions(PermissionsBitField.Flags.ManageMessages),
 
   // Execution
   async execute(interaction) {

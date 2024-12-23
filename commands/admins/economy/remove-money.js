@@ -1,5 +1,5 @@
 // Imports
-const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
+const { SlashCommandBuilder, EmbedBuilder, PermissionsBitField } = require("discord.js");
 const fs = require("fs");
 const dataFile = "./economy/economy-data.json";
 const {log} = require("../../../economy/economy-config.json");
@@ -21,7 +21,9 @@ module.exports = {
         .setDescription("Le montant à retirer")
         .setRequired(true)
         .setMinValue(1)
-    ),
+    )
+    .setDefaultMemberPermissions(PermissionsBitField.Flags.Administrator),
+    
   async execute(interaction) {
     await interaction.deferReply();
 

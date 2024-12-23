@@ -23,16 +23,7 @@ async function getCommands() {
       for (const file of commandFiles) {
         const filePath = path.join(categoryPath, folder, file);
         const command = require(filePath);
-
-        // Set Default Permissions
-        if (category === "admins") {
-          command.data.default_member_permissions =
-            PermissionsBitField.Flags.Administrator.toString();
-        } else if (category === "mods") {
-          command.data.default_member_permissions =
-            PermissionsBitField.Flags.BanMembers.toString();
-        }
-
+        
         if ("data" in command && "execute" in command) {
           commands.push(command.data.toJSON());
         } else {
