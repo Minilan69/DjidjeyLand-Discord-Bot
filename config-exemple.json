@@ -4,7 +4,7 @@
   "guildId": "Server ID",
   "readyMessage": "Le bot a démarré à {time} le {date}",
   "ready": {
-    "channel": "1320413391793422387",
+    "channel": "Salon où poster le message de ready",
     "message": "Le bot a démarré à {time} le {date}",
     "_readyMessageComment": "placeholder disponibles : {time} {date} {botName} - pour désactiver la fonctionnalité laisser le channel vide"
   }
