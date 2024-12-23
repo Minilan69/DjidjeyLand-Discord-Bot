@@ -93,7 +93,7 @@ logger.wait("[Login]", "Connexion en cours...");
 client
   .login(config.token)
   .then(() => {
-    logger.ok("[Login]", "Connecté             ");
+    logger.ok("[Login]", "Connecté");
   })
   .catch((err) => {
     logger.err("[Login]", "Échec de la connexion");

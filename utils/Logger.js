@@ -1,92 +1,78 @@
-const chalk = require("chalk")
-const moment = require("moment")
-const fs = require("fs")
-let output = process.stdout
+const chalk = require("chalk");
+const moment = require("moment");
+const fs = require("fs");
+const path = require("path");
 
-module.exports = {
-	"info": function info(prefix, message) {
-		if(message) {
-			console.info(`[${getDayAndHour()} ${chalk.blue("INFO")}]: ${prefix} ${message}`)
-		}
-		else {
-			console.info(`[${getDayAndHour()} ${chalk.blue("INFO")}]: ${prefix}`)
-		}
-	},
-	"log": function log(prefix, message) {
-		if(message) {
-			console.info(`[${getDayAndHour()} ${chalk.blue("LOGS")}]: ${prefix} ${message}`)
-		}
-		else {
-			console.info(`[${getDayAndHour()} ${chalk.blue("LOGS")}]: ${prefix}`)
-		}
-	},
-	"warn": function warn(prefix, message) {
-		if(message) {
-			console.info(`[${getDayAndHour()} ${chalk.yellow("WARN")}]: ${prefix} ${chalk.yellow(message)}`)
-		}
-		else {
-			console.info(`[${getDayAndHour()} ${chalk.yellow("WARN")}]: ${chalk.yellow(prefix)}`)
-		}
-	},
-	"error": function error(prefix, message) {
-		if(message) {
-			console.info(`[${getDayAndHour()} ${chalk.red("ERR!")}]: ${prefix} ${chalk.red(message)}`)
-		}
-		else {
-			console.info(`[${getDayAndHour()} ${chalk.red("ERR!")}]: ${chalk.red(prefix)}`)
-		}
-	},
-	"ok": function ok(prefix, message) {
-		if(message) {
-			console.info(`[${getDayAndHour()} ${chalk.green(" OK ")}]: ${prefix} ${chalk.green(message)}`)
-		}
-		else {
-			console.info(`[${getDayAndHour()} ${chalk.green(" OK ")}]: ${chalk.green(prefix)}`)
-		}
-	},
-	"wait": function wait(prefix, message) {
-		if(message) {
-			output.write(`[${getDayAndHour()} ${chalk.blue(" .. ")}]: ${prefix} ${message}`)
-			output.cursorTo(0)
-		}
-		else {
-			output.write(`[${getDayAndHour()} ${chalk.blue(" .. ")}]: ${prefix}`)
-			output.cursorTo(0)
-		}
-	},
-	"fatal": function fatal(err) {
-		console.info(`${chalk.bgRed(`[${getDayAndHour()} FATAL]: Encountered an uncaught exception`)}\n${err.stack}`)
-		let crashReport = `An unexpected exception occurred
-		
-Time: ${getDayAndHour()}
-Error: ${err}
-		
-Stack trace:
+// Type Of Log
+const levels = {
+  INFO: { label: "INFO", color: chalk.blue },
+  LOG: { label: "LOGS", color: chalk.blue },
+  WARN: { label: "WARN", color: chalk.yellow },
+  ERROR: { label: "ERR!", color: chalk.red },
+  OK: { label: " OK ", color: chalk.green },
+  FATAL: { label: "FATAL", color: chalk.bgRed },
+  WAIT: { label: " .. ", color: chalk.blue },
+};
 
-${err.stack}
-		`
-		let heure = `${moment().format("DD-MM-YYYY")} ${moment().format("HH-mm-ss-SSS")}`
-		if(fs.existsSync("./crashs-report")) {
-			fs.writeFile(`./crashs-report/${heure}.txt`, crashReport, function(err) {
-				if(err) module.exports.error("Unable to save crash report:\n" + err.stack)
-				if(!err) module.exports.error("This crash report has been saved to: ./crashs-report/" + heure + ".txt")
-				process.exit(1)
-			})
-		}
-		else {
-			fs.mkdir("./crashs-report", function(err1) {
-				fs.writeFile(`./crashs-report/${heure}.txt`, crashReport, function(err) {
-					if(err) module.exports.error("Unable to save crash report:\n" + err.stack)
-					if(!err) module.exports.error("This crash report has been saved to: ./crashs-report/" + heure + ".txt")
-					process.exit(1)
-				})
-			})
-		}
-	},
+// Generate Log
+function log(level, prefix, message) {
+  const timestamp = getDayAndHour();
+  const formattedMessage = `[${timestamp}]${prefix}[${level.color(
+    level.label
+  )}]: ${message ? ` ${level.color(message)}` : ""}`;
+
+  if (level === levels.ERROR || level === levels.FATAL) {
+    console.error(formattedMessage);
+  } else {
+    console.info(formattedMessage);
+  }
 }
 
+// Log Gestion
+module.exports = {
+  info: (prefix, message) => log(levels.INFO, prefix, message),
+  log: (prefix, message) => log(levels.LOG, prefix, message),
+  warn: (prefix, message) => log(levels.WARN, prefix, message),
+  error: (prefix, message) => log(levels.ERROR, prefix, message),
+  ok: (prefix, message) => log(levels.OK, prefix, message),
+  wait: (prefix, message) => {
+    process.stdout.write(
+      `[${getDayAndHour()}]${prefix}[${levels.WAIT.color(
+        levels.WAIT.label
+      )}]: ${message ? ` ${message}` : ""}\r`
+    );
+  },
+  fatal: async (err) => {
+    log(levels.FATAL, "Encountered an uncaught exception", err.stack);
+
+    const crashReport = `
+An unexpected exception occurred
+Time: ${getDayAndHour()}
+Error: ${err}
+
+Stack trace:
+${err.stack}
+    `;
+
+    const folderPath = path.resolve("./crashs-report");
+    const fileName = `${moment().format("DD-MM-YYYY_HH-mm-ss")}.txt`;
+    const filePath = path.join(folderPath, fileName);
+
+    try {
+      if (!fs.existsSync(folderPath)) {
+        fs.mkdirSync(folderPath);
+      }
+      fs.writeFileSync(filePath, crashReport);
+      log(levels.ERROR, "Crash report saved to", filePath);
+    } catch (error) {
+      log(levels.ERROR, "Failed to save crash report", error.message);
+    } finally {
+      process.exit(1);
+    }
+  },
+};
+
+// Date Format
 function getDayAndHour() {
-	let day = moment().format("DD/MM/YYYY")
-	let hour = moment().format("HH:mm:ss.SSS")
-	return `${day} ${hour}`
+  return moment().format("DD/MM/YYYY][HH:mm:ss");
 }
