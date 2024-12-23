@@ -1,7 +1,7 @@
 {
   "name": "Étoile 3",
   "description": "Troisième étoile",
-  "price": 450,
+  "price": 500,
   "requiredRole": "1272631065080627295",
   "actions": [
     {
@@ -14,7 +14,7 @@
     },
     {
       "type": "sendMessage",
-      "content": "Félicitations, vous avez acquis l'étoile 3 !"
+      "content": "✨ Félicitation à toi, tu as obtenu(e) ta **troisème étoile**!\nTu obtiens les récompenses suivantes :\n- __Amélioration__ du **/collect-income**\n- __Participation possible__ à **tous** les **GiveAway** ! \n- __Accès__ au salon **chibis** !\n- __Possibilité__ de faire sa **publicité** dans le salon <#1272569603536453692>\n- __Accès__ aux serveurs MC en **bêta**/**test**\n- __-10%__ sur le **/shop** du __serveur Survie__"
     }
   ]
 }

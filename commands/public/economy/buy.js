@@ -147,7 +147,7 @@ module.exports = {
 
       // Response
       const embed = new EmbedBuilder()
-        .setColor("Green")
+        .setColor("Blue")
         .setAuthor({ name: username, iconURL: userAvatar })
         .setDescription(message)
         .setTimestamp();

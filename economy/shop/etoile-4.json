@@ -1,7 +1,7 @@
 {
   "name": "Étoile 4",
   "description": "Quatrième étoile",
-  "price": 600,
+  "price": 2000,
   "requiredRole": "1272631077281730582",
   "actions": [
     {
@@ -14,7 +14,7 @@
     },
     {
       "type": "sendMessage",
-      "content": "Félicitations, vous avez acquis l'étoile 4 !"
+      "content": "✨ Félicitation à toi, tu as obtenu(e) ta **quatrième étoile** !\nTu obtiens les récompenses suivantes :\n- __Amélioration__ du **/collect-income**\n- __Accès__ aux **archives** du serveur ! Les vieux salons ! \n- __-25%__ sur le **/shop** du __Serveur Survie__"
     }
   ]
 }
