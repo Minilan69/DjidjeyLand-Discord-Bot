@@ -9,16 +9,11 @@ module.exports = {
   once: true,
   execute(client) {
     // Variables
-    const launchTime = new Date();
     let day = moment().format("DD/MM/YYYY")
     let hour = moment().format("HH:mm:ss")
 
     // Console
-    console.log(
-      `[✅PASS] ${
-        client.user.username
-      } launched at ${launchTime.toLocaleTimeString()} the ${launchTime.toLocaleDateString()}`
-    );
+    client.logger.ok("[Events/Ready]", `Prêt et connecté sur ${client.user.username}`)
 
     // Message
     if (client.config.ready.channel) {
