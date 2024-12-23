@@ -3,7 +3,7 @@ const { Routes, PermissionsBitField } = require("discord.js");
 const { clientId, guildId, token } = require("./config.json");
 const fs = require("fs");
 const path = require("path");
-const Logger = require("./util/Logger")
+const Logger = require("./utils/Logger");
 
 // Commands List
 async function getCommands() {
@@ -23,12 +23,15 @@ async function getCommands() {
       for (const file of commandFiles) {
         const filePath = path.join(categoryPath, folder, file);
         const command = require(filePath);
-        
+
         if ("data" in command && "execute" in command) {
           commands.push(command.data.toJSON());
         } else {
-          Logger.error("[Commands]", `${filePath}: il manque les propriétés "data" ou "execute"`)
-          Logger.wait("[Commands]", "Construction des commandes...")
+          Logger.error(
+            "[Commands]",
+            `${filePath}: il manque les propriétés "data" ou "execute"`
+          );
+          Logger.wait("[Commands]", "Construction des commandes...");
         }
       }
     }
@@ -40,10 +43,10 @@ async function getCommands() {
 // Update Commands
 async function deployCommands() {
   return new Promise(async (resolve) => {
-    Logger.wait("[Commands]", "Construction des commandes...")
+    Logger.wait("[Commands]", "Construction des commandes...");
     const commands = await getCommands();
-    Logger.ok("[Commands]", `${commands.length} commandes construites       `)
-    Logger.wait("[Commands]", "Enregistrement des commandes...")
+    Logger.ok("[Commands]", `${commands.length} commandes construites       `);
+    Logger.wait("[Commands]", "Enregistrement des commandes...");
     const { REST } = require("@discordjs/rest");
     const rest = new REST({ timeout: 60000 }).setToken(token);
 
@@ -53,17 +56,20 @@ async function deployCommands() {
         {
           body: commands,
         }
-      )
+      );
 
-      Logger.ok("[Commands]", `${data.length} commandes enregistrées      `)
-      resolve()
+      Logger.ok("[Commands]", `${data.length} commandes enregistrées      `);
+      resolve();
     } catch (error) {
       // Error
-      Logger.error("[Commands]", "Une erreur est survenue lors de l'enregistrement des commandes")
-      Logger.error("[Commands]", error)
-      process.exit(1)
+      Logger.error(
+        "[Commands]",
+        "Une erreur est survenue lors de l'enregistrement des commandes"
+      );
+      Logger.error("[Commands]", error);
+      process.exit(1);
     }
-  })
+  });
 }
 
 // Export

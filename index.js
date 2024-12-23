@@ -1,27 +1,29 @@
-(async() => {
-  let checkDependencies = require("./util/checkDependencies.js")
-  await checkDependencies()
-})()
+(async () => {
+  let checkDependencies = require("./utils/checkDependencies.js");
+  await checkDependencies();
+})();
 
 // Imports
 const fs = require("node:fs");
 const path = require("node:path");
 const { Client, Collection, Events, GatewayIntentBits } = require("discord.js");
-const logger = require("./util/Logger")
-if(!fs.existsSync("./config.json")) {
-  logger.error("[Config]", "Aucun fichier de configuration trouvé")
-  logger.info("[Config]", "Assurez-vous d'avoir copié le fichier config-exemple.json en config.json")
-  process.exit(1)
+const logger = require("./utils/Logger.js");
+if (!fs.existsSync("./config.json")) {
+  logger.error("[Config]", "Aucun fichier de configuration trouvé");
+  logger.info(
+    "[Config]",
+    "Assurez-vous d'avoir copié le fichier config-exemple.json en config.json"
+  );
+  process.exit(1);
 }
 
-var config = fs.readFileSync("./config.json")
+var config = fs.readFileSync("./config.json");
 try {
-  config = JSON.parse(config)
-}
-catch(err) {
-  logger.error("[Config]", "Impossible de lire le fichier config.json")
-  logger.error("[Config]", err)
-  process.exit(1)
+  config = JSON.parse(config);
+} catch (err) {
+  logger.error("[Config]", "Impossible de lire le fichier config.json");
+  logger.error("[Config]", err);
+  process.exit(1);
 }
 
 const { deployCommands } = require("./deploy-commands");
@@ -40,9 +42,9 @@ client.logger = logger;
 client.config = config;
 
 // Commands
-(async() => {
-  await deployCommands()
-})()
+(async () => {
+  await deployCommands();
+})();
 
 client.commands = new Collection();
 const foldersPath = path.join(__dirname, "commands");
@@ -71,7 +73,6 @@ for (const folder of commandFolders) {
   }
 }
 
-
 // Events
 const eventsPath = path.join(__dirname, "events");
 const eventFiles = fs
@@ -88,13 +89,14 @@ for (const file of eventFiles) {
 }
 
 // Bot
-logger.wait("[Login]", "Connexion en cours...")
-client.login(config.token)
-.then(() => {
-  logger.ok("[Login]", "Connecté             ")
-})
-.catch(err => {
-  logger.err("[Login]", "Échec de la connexion")
-  logger.err("[Login]", err)
-  process.exit(1)
-})
+logger.wait("[Login]", "Connexion en cours...");
+client
+  .login(config.token)
+  .then(() => {
+    logger.ok("[Login]", "Connecté             ");
+  })
+  .catch((err) => {
+    logger.err("[Login]", "Échec de la connexion");
+    logger.err("[Login]", err);
+    process.exit(1);
+  });
