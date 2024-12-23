@@ -7,7 +7,7 @@ module.exports = {
   async execute(message) {
     if (
       message.content.trim().endsWith(`<@${message.client.user.id}>`) && // See if the bot is mentioned at the end
-      message.member.permissions.has(PermissionsBitField.Flags.Administrator) && // Verify if the author is admin
+      message.member.permissions.has(PermissionsBitField.Flags.MuteMembers) && // Verify if the author is admin
       message.author.id !== message.client.user.id // Check if the author is not the bot
     ) {
 

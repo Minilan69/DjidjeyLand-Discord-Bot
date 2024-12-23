@@ -4,8 +4,9 @@ const { Events, AttachmentBuilder } = require("discord.js");
 // Event Responde
 module.exports = {
   name: Events.GuildMemberAdd,
-  async execute(member, client) {
+  async execute(member) {
     // Variables
+    const client = member.client;
     const channelId = "1275973666521219132";
     const channel = member.guild.channels.cache.get(channelId);
     const name =
@@ -23,7 +24,7 @@ module.exports = {
 
     // Channel Not Found
     if (!channel) {
-      console.error("Salon de bienvenue introuvable");
+      client.logger.error("MemberJoin", "Welcome channel not found");
       return;
     }
 
@@ -41,7 +42,7 @@ Profite bien de ton aventure ici ! 🌟`,
       thumbnail: { url: avatarUrl },
       footer: {
         text: `Vien discuter avec nous ${name} !`,
-        icon_url: "attachment://server-icon.png",
+        icon_url: "attachment://serv-icon.png",
       },
     };
 
@@ -52,10 +53,10 @@ Profite bien de ton aventure ici ! 🌟`,
         embeds: [embed],
         files: [footer],
       });
-      client.logger.ok("[Join]", `${member.user.tag} join server`);
+      client.logger.ok("MemberJoin", `${member.user.tag} join server`);
     } catch (error) {
       // Error
-      client.logger.error("[Join]", error);
+      client.logger.error("MemberJoin", error);
     }
   },
 };
