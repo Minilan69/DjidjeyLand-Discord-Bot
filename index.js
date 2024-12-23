@@ -14,6 +14,16 @@ if(!fs.existsSync("./config.json")) {
   process.exit(1)
 }
 
+var config = fs.readFileSync("./config.json")
+try {
+  config = JSON.parse(config)
+}
+catch(err) {
+  logger.error("[Config]", "Impossible de lire le fichier config.json")
+  logger.error("[Config]", err)
+  process.exit(1)
+}
+
 const { deployCommands } = require("./deploy-commands");
 
 // Client
@@ -25,6 +35,9 @@ const client = new Client({
     GatewayIntentBits.MessageContent,
   ],
 });
+
+client.logger = logger
+client.config = config
 
 // Commands
 try {
@@ -77,4 +90,13 @@ for (const file of eventFiles) {
 }
 
 // Bot
-client.login(token);
+logger.wait("[Login]", "Connexion en cours...")
+client.login(config.token)
+.then(() => {
+  logger.ok("[Login]", "Connecté             ")
+})
+.catch(err => {
+  logger.err("[Login]", "Échec de la connexion")
+  logger.err("[Login]", err)
+  process.exit(1)
+})
