@@ -17,9 +17,7 @@ const levels = {
 // Generate Log
 function log(level, prefix, message) {
   const timestamp = getDayAndHour();
-  const formattedMessage = `[${timestamp}]${prefix}[${level.color(
-    level.label
-  )}]: ${message ? ` ${level.color(message)}` : ""}`;
+  const formattedMessage = `[${timestamp} ${level.color(level.label)}]${prefix}: ${message ? `${level.color(message)}` : ""}`;
 
   if (level === levels.ERROR || level === levels.FATAL) {
     console.error(formattedMessage);
@@ -41,6 +39,7 @@ module.exports = {
         levels.WAIT.label
       )}]: ${message ? ` ${message}` : ""}\r`
     );
+    if(typeof process.stdout.cursorTo === "function") process.stdout.cursorTo(0)
   },
   fatal: async (err) => {
     log(levels.FATAL, "Encountered an uncaught exception", err.stack);
@@ -74,5 +73,5 @@ ${err.stack}
 
 // Date Format
 function getDayAndHour() {
-  return moment().format("DD/MM/YYYY][HH:mm:ss");
+  return moment().format("DD/MM/YYYY HH:mm:ss");
 }
