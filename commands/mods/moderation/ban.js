@@ -1,5 +1,9 @@
 // Imports
-const { SlashCommandBuilder, PermissionsBitField } = require("discord.js");
+const {
+  SlashCommandBuilder,
+  PermissionsBitField,
+  EmbedBuilder,
+} = require("discord.js");
 
 // Command
 module.exports = {
@@ -23,7 +27,7 @@ module.exports = {
   // Execution
   async execute(interaction) {
     await interaction.deferReply();
-    
+
     // Variables
     const user = interaction.options.getUser("membre");
     const reason = interaction.options.getString("raison");
@@ -55,12 +59,25 @@ module.exports = {
         ephemeral: true,
       });
     }
-
     try {
       // Ban the user
-      member.ban(`Par ${name} : ${reason}`);
-      await interaction.editReply(`✅ <@${user.id}> a été ban
-        Raison: ${reason}`);
+      const embed = new EmbedBuilder()
+        .setColor("Green")
+        .setAuthor({
+          name: "BAN",
+          iconURL: user.displayAvatarURL(),
+        })
+        .setDescription(
+          `${user} a été banni avec succès\n **Raison :** ${reason}`
+        )
+        .setTimestamp();
+        
+        await member.ban({
+          reason: `Par ${name} : ${reason}`,
+          deleteMessageSeconds: 0,
+        });
+
+      await interaction.editReply({ embeds: [embed] });
     } catch (error) {
       // Error
       interaction.client.logger.error("Ban", error);

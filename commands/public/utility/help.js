@@ -19,7 +19,7 @@ module.exports = {
 
     // Embed
     const embed = new EmbedBuilder()
-      .setColor("#0099ff")
+      .setColor("Blue")
       .setTitle("Commandes disponibles")
       .setDescription("Voici la liste des commandes disponibles pour les modérateurs")
       .setTimestamp();

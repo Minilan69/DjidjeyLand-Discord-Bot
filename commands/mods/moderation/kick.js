@@ -1,5 +1,9 @@
 // Imports
-const { SlashCommandBuilder, PermissionsBitField } = require("discord.js");
+const {
+  SlashCommandBuilder,
+  PermissionsBitField,
+  EmbedBuilder,
+} = require("discord.js");
 
 // Command
 module.exports = {
@@ -59,8 +63,18 @@ module.exports = {
     // Kick User
     try {
       member.kick(`Par ${name} : ${reason}`);
-      await interaction.editReply(`✅ <@${user.id}> a été kick
-        Raison: ${reason}`);
+      const embed = new EmbedBuilder()
+              .setColor("Green")
+              .setAuthor({
+                name: "KICK",
+                iconURL: user.displayAvatarURL(),
+              })
+              .setDescription(
+                `${user} a été kick avec succès\n **Raison :** ${reason}`
+              )
+              .setTimestamp();
+      
+            await interaction.editReply({ embeds: [embed] });
     } catch (error) {
       // Error
       interaction.client.logger.error("Kick", error);

@@ -1,5 +1,9 @@
 // Imports
-const { SlashCommandBuilder, PermissionsBitField } = require("discord.js");
+const {
+  SlashCommandBuilder,
+  PermissionsBitField,
+  EmbedBuilder,
+} = require("discord.js");
 
 // Command
 module.exports = {
@@ -67,12 +71,18 @@ module.exports = {
     // Kick User
     try {
       member.timeout(null, `Par ${name} : ${reason}`);
-      await interaction.editReply(
-        `✅ <@${user.id}> a été unmute avec ${Math.ceil(
-          time / 60000
-        )} minutes restantes
-        Raison: ${reason}`
-      );
+      const embed = new EmbedBuilder()
+              .setColor("Green")
+              .setAuthor({
+                name: "UNMUTE",
+                iconURL: user.displayAvatarURL(),
+              })
+              .setDescription(
+                `${user} a été unmute avec succès\n **Raison :** ${reason}`
+              )
+              .setTimestamp();
+      
+            await interaction.editReply({ embeds: [embed] });
     } catch (error) {
       // Error
       interaction.client.logger.error("Unmute", error);

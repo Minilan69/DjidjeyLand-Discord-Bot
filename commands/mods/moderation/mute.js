@@ -1,5 +1,9 @@
 // Imports
-const { SlashCommandBuilder, PermissionsBitField } = require("discord.js");
+const {
+  SlashCommandBuilder,
+  PermissionsBitField,
+  EmbedBuilder,
+} = require("discord.js");
 
 // Command
 module.exports = {
@@ -76,10 +80,18 @@ module.exports = {
     // Kick User
     try {
       member.timeout(time * 60000, `Par ${name} : ${reason}`);
-      await interaction.editReply(
-        `✅ <@${user.id}> a été mute pour ${time} minutes
-        Raison: ${reason}`
-      );
+      const embed = new EmbedBuilder()
+              .setColor("Green")
+              .setAuthor({
+                name: "MUTE",
+                iconURL: user.displayAvatarURL(),
+              })
+              .setDescription(
+                `${user} a été mute avec succès\n **Raison :** ${reason}`
+              )
+              .setTimestamp();
+      
+            await interaction.editReply({ embeds: [embed] });
     } catch (error) {
       // Error
       interaction.client.logger.error("Mute", error);
