@@ -1,6 +1,10 @@
 // Add fields to embed
 // Imports
-const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
+const {
+  SlashCommandBuilder,
+  EmbedBuilder,
+  PermissionsBitField,
+} = require("discord.js");
 const fs = require("fs");
 const path = require("path");
 
@@ -8,7 +12,8 @@ const path = require("path");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("helpm")
-    .setDescription("Affiche la liste des commandes disponibles pour les modérateurs"),
+    .setDescription("Affiche la liste des commandes disponibles pour les modérateurs")
+    .setDefaultMemberPermissions(PermissionsBitField.Flags.ManageMessages),
 
   async execute(interaction) {
     await interaction.deferReply();

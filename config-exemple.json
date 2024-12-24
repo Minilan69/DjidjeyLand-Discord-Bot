@@ -10,5 +10,6 @@
   "log": {
     "message": "[{date}][{time}][{prefix}][{label}]: {message}",
     "_logMessageComment": "placeholder disponibles : {date} {time} {prefix} {label} {message}"
-  }
+  },
+  "ModLog" : "Moderation Log Channel ID"
 }
