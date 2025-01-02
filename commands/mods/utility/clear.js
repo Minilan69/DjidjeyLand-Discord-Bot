@@ -4,11 +4,11 @@ const { SlashCommandBuilder, PermissionsBitField } = require("discord.js");
 // Command
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("clear")
+    .setName("dl-clear")
     .setDescription("Supprimer un nombre spécifié de messages")
     .addIntegerOption((option) =>
       option
-        .setName("dl-nombre")
+        .setName("nombre")
         .setDescription("Le nombre de messages à supprimer")
         .setRequired(true)
         .setMinValue(1)
