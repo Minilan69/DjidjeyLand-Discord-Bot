@@ -8,7 +8,7 @@ const {
 // Command
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("mute")
+    .setName("dl-mute")
     .setDescription("Permet de mute un membre")
     .addUserOption((option) =>
       option
@@ -81,17 +81,17 @@ module.exports = {
     try {
       member.timeout(time * 60000, `Par ${name} : ${reason}`);
       const embed = new EmbedBuilder()
-              .setColor("Green")
-              .setAuthor({
-                name: "MUTE",
-                iconURL: user.displayAvatarURL(),
-              })
-              .setDescription(
-                `${user} a été mute avec succès\n **Raison :** ${reason}`
-              )
-              .setTimestamp();
-      
-            await interaction.editReply({ embeds: [embed] });
+        .setColor("Green")
+        .setAuthor({
+          name: "MUTE",
+          iconURL: user.displayAvatarURL(),
+        })
+        .setDescription(
+          `${user} a été mute avec succès\n **Raison :** ${reason}`
+        )
+        .setTimestamp();
+
+      await interaction.editReply({ embeds: [embed] });
     } catch (error) {
       // Error
       interaction.client.logger.error("Mute", error);

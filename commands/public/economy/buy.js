@@ -5,7 +5,7 @@ const { log } = require("../../../economy/economy-config.json");
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("buy")
+    .setName("dl-buy")
     .setDescription("Achetez un item dans la boutique")
     .addStringOption((option) => {
       const itemsPath = path.join(__dirname, "../../../economy/shop");
@@ -53,7 +53,6 @@ module.exports = {
       }
     }
 
-
     if (!selectedItem) {
       const embed = new EmbedBuilder()
         .setColor("Red")
@@ -93,13 +92,13 @@ module.exports = {
 
     // Verify if user has enough money
     if (userBalance < selectedItem.price) {
-        const embed = new EmbedBuilder()
-          .setColor("Red")
-          .setAuthor({ name: username, iconURL: userAvatar })
-          .setDescription(
-            `Vous n'avez pas assez d'argent pour acheter **${selectedItem.name}**. Il vous faut **${selectedItem.price}** <:money:1272567139760472205>`
-          )
-          .setTimestamp();
+      const embed = new EmbedBuilder()
+        .setColor("Red")
+        .setAuthor({ name: username, iconURL: userAvatar })
+        .setDescription(
+          `Vous n'avez pas assez d'argent pour acheter **${selectedItem.name}**. Il vous faut **${selectedItem.price}** <:money:1272567139760472205>`
+        )
+        .setTimestamp();
 
       return interaction.editReply({ embeds: [embed] });
     }

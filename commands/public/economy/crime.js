@@ -11,7 +11,7 @@ const {
 // Command
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("crime")
+    .setName("dl-crime")
     .setDescription(
       "Commettez un crime et risquez de perdre ou gagner de l'argent !"
     ),
@@ -59,8 +59,7 @@ module.exports = {
       const isWin = Math.random() > 0.5; // 50%
 
       if (isWin) {
-        amount =
-          Math.floor(Math.random() * (maxWin - minWin + 1)) + minWin;
+        amount = Math.floor(Math.random() * (maxWin - minWin + 1)) + minWin;
         data[userId].balance += amount;
 
         // Choose Random Message

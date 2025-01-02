@@ -11,8 +11,10 @@ const path = require("path");
 // Command
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("helpm")
-    .setDescription("Affiche la liste des commandes disponibles pour les modérateurs")
+    .setName("dl-helpm")
+    .setDescription(
+      "Affiche la liste des commandes disponibles pour les modérateurs"
+    )
     .setDefaultMemberPermissions(PermissionsBitField.Flags.ManageMessages),
 
   async execute(interaction) {

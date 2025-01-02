@@ -8,7 +8,7 @@ module.exports = {
     .setDescription("Supprimer un nombre spécifié de messages")
     .addIntegerOption((option) =>
       option
-        .setName("nombre")
+        .setName("dl-nombre")
         .setDescription("Le nombre de messages à supprimer")
         .setRequired(true)
         .setMinValue(1)
@@ -22,7 +22,7 @@ module.exports = {
 
     // Variables
     const amount = interaction.options.getInteger("nombre");
-    
+
     // Delete the messages
     await interaction.channel.bulkDelete(amount, true);
     await interaction.editReply({

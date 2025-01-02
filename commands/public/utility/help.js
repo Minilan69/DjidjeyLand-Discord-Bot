@@ -6,7 +6,7 @@ const path = require("path");
 // Command
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("help")
+    .setName("dl-help")
     .setDescription("Affiche la liste des commandes disponibles"),
 
   async execute(interaction) {
@@ -21,7 +21,9 @@ module.exports = {
     const embed = new EmbedBuilder()
       .setColor("Blue")
       .setTitle("Commandes disponibles")
-      .setDescription("Voici la liste des commandes disponibles pour les modérateurs")
+      .setDescription(
+        "Voici la liste des commandes disponibles pour les modérateurs"
+      )
       .setTimestamp();
 
     // View all commands

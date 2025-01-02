@@ -5,7 +5,7 @@ const process = require("process");
 // Command
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("ping")
+    .setName("dl-ping")
     .setDescription(
       "Affiche le ping du bot et les informations du serveur distant"
     ),

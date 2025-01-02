@@ -11,7 +11,7 @@ const {
 // Command
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("work")
+    .setName("dl-work")
     .setDescription("Travaillez pour gagner de l'argent"),
   async execute(interaction) {
     await interaction.deferReply();
@@ -73,9 +73,11 @@ module.exports = {
             new EmbedBuilder()
               .setColor("Green")
               .setAuthor({ name: userName, iconURL: userAvatar })
-              .setDescription(`Amount : **+${amount}** <:money:1272567139760472205>\n Reason : **Work**`)
-              .setTimestamp()
-          ]
+              .setDescription(
+                `Amount : **+${amount}** <:money:1272567139760472205>\n Reason : **Work**`
+              )
+              .setTimestamp(),
+          ],
         });
       }
     } catch (error) {

@@ -8,7 +8,7 @@ const {
 // Command
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("kick")
+    .setName("dl-kick")
     .setDescription("Permet de kick un membre")
     .addUserOption((option) =>
       option
@@ -27,7 +27,7 @@ module.exports = {
   // Execution
   async execute(interaction) {
     await interaction.deferReply();
-    
+
     // Variables
     const user = interaction.options.getUser("membre");
     const reason = interaction.options.getString("raison");
@@ -64,17 +64,17 @@ module.exports = {
     try {
       member.kick(`Par ${name} : ${reason}`);
       const embed = new EmbedBuilder()
-              .setColor("Green")
-              .setAuthor({
-                name: "KICK",
-                iconURL: user.displayAvatarURL(),
-              })
-              .setDescription(
-                `${user} a été kick avec succès\n **Raison :** ${reason}`
-              )
-              .setTimestamp();
-      
-            await interaction.editReply({ embeds: [embed] });
+        .setColor("Green")
+        .setAuthor({
+          name: "KICK",
+          iconURL: user.displayAvatarURL(),
+        })
+        .setDescription(
+          `${user} a été kick avec succès\n **Raison :** ${reason}`
+        )
+        .setTimestamp();
+
+      await interaction.editReply({ embeds: [embed] });
     } catch (error) {
       // Error
       interaction.client.logger.error("Kick", error);

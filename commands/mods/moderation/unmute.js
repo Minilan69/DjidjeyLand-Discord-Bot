@@ -8,7 +8,7 @@ const {
 // Command
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("unmute")
+    .setName("dl-unmute")
     .setDescription("Permet de unmute un membre")
     .addUserOption((option) =>
       option
@@ -30,7 +30,7 @@ module.exports = {
     // Variables
     const user = interaction.options.getUser("membre");
     const reason = interaction.options.getString("raison");
-    
+
     const member = await interaction.guild.members.fetch(user.id);
     const time = member.communicationDisabledUntilTimestamp;
     const name =
@@ -72,17 +72,17 @@ module.exports = {
     try {
       member.timeout(null, `Par ${name} : ${reason}`);
       const embed = new EmbedBuilder()
-              .setColor("Green")
-              .setAuthor({
-                name: "UNMUTE",
-                iconURL: user.displayAvatarURL(),
-              })
-              .setDescription(
-                `${user} a été unmute avec succès\n **Raison :** ${reason}`
-              )
-              .setTimestamp();
-      
-            await interaction.editReply({ embeds: [embed] });
+        .setColor("Green")
+        .setAuthor({
+          name: "UNMUTE",
+          iconURL: user.displayAvatarURL(),
+        })
+        .setDescription(
+          `${user} a été unmute avec succès\n **Raison :** ${reason}`
+        )
+        .setTimestamp();
+
+      await interaction.editReply({ embeds: [embed] });
     } catch (error) {
       // Error
       interaction.client.logger.error("Unmute", error);

@@ -5,7 +5,7 @@ const { EmbedBuilder } = require("discord.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("shop")
+    .setName("dl-shop")
     .setDescription("Affiche la boutique avec les items disponibles"),
 
   async execute(interaction) {

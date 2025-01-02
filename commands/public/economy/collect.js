@@ -11,7 +11,7 @@ const {
 // Command
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("collect")
+    .setName("dl-collect")
     .setDescription("Réclamez votre revenu quotidien"),
   async execute(interaction) {
     await interaction.deferReply();

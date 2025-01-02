@@ -7,21 +7,21 @@ const {log} = require("../../../economy/economy-config.json");
 // Command
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("give-money")
+    .setName("dl-give-money")
     .setDescription("Permet de donner de l'argent à quelqu'un")
     .addUserOption((option) =>
-        option
-            .setName("membre")
-            .setDescription("Le membre à qui vous voulez donner de l'argent")
-            .setRequired(true)
-        )
+      option
+        .setName("membre")
+        .setDescription("Le membre à qui vous voulez donner de l'argent")
+        .setRequired(true)
+    )
     .addIntegerOption((option) =>
-        option
-            .setName("montant")
-            .setDescription("Le montant à donner")
-            .setRequired(true)
-            .setMinValue(1)
-        ),
+      option
+        .setName("montant")
+        .setDescription("Le montant à donner")
+        .setRequired(true)
+        .setMinValue(1)
+    ),
   async execute(interaction) {
     await interaction.deferReply();
 
@@ -37,7 +37,6 @@ module.exports = {
     const usergiveName = usergive.username;
     const usergiveAvatar = usergive.displayAvatarURL({ dynamic: true });
     const data = JSON.parse(fs.readFileSync(dataFile));
-    
 
     try {
       // Verify if user2 exists
@@ -102,9 +101,7 @@ module.exports = {
       }
     } catch (error) {
       interaction.client.logger.error("GiveMoney", error);
-      await interaction.editReply(
-        "❌ Impossible d'ajouter de l'argent"
-      );
+      await interaction.editReply("❌ Impossible d'ajouter de l'argent");
     }
   },
 };

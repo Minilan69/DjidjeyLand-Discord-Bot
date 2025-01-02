@@ -6,7 +6,7 @@ const dataFile = "./economy/economy-data.json";
 // Command
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("balance")
+    .setName("dl-balance")
     .setDescription("Affiche votre solde ou celui d'un autre membre")
     .addUserOption((option) =>
       option
@@ -34,9 +34,9 @@ module.exports = {
 
       // Message
       if (userid === interaction.user.id) {
-        message = `Vous avez **${balance}** <:money:1272567139760472205>`
+        message = `Vous avez **${balance}** <:money:1272567139760472205>`;
       } else {
-        message = `${user} a **${balance}** <:money:1272567139760472205>`
+        message = `${user} a **${balance}** <:money:1272567139760472205>`;
       }
 
       const isPositive = balance >= 0;

@@ -11,8 +11,10 @@ const path = require("path");
 // Command
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("helpa")
-    .setDescription("Affiche la liste des commandes disponibles pour les administrateurs")
+    .setName("dl-helpa")
+    .setDescription(
+      "Affiche la liste des commandes disponibles pour les administrateurs"
+    )
     .setDefaultMemberPermissions(PermissionsBitField.Flags.Administrator),
 
   async execute(interaction) {
@@ -27,7 +29,9 @@ module.exports = {
     const embed = new EmbedBuilder()
       .setColor("Blue")
       .setTitle("Commandes disponibles")
-      .setDescription("Voici la liste des commandes disponibles pour les administrateurs")
+      .setDescription(
+        "Voici la liste des commandes disponibles pour les administrateurs"
+      )
       .setTimestamp();
 
     // View all commands
@@ -48,7 +52,10 @@ module.exports = {
           if ("data" in command && "execute" in command) {
             fieldValue += `\`/${command.data.name}\` - ${command.data.description}\n`;
           } else {
-            client.logger.warn("HelpA", `[❗WARNING] ${filePath} missing property`);
+            client.logger.warn(
+              "HelpA",
+              `[❗WARNING] ${filePath} missing property`
+            );
           }
         }
 

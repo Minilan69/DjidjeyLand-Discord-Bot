@@ -8,7 +8,7 @@ const {
 // Command
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("ban")
+    .setName("dl-ban")
     .setDescription("Permet de ban un membre")
     .addUserOption((option) =>
       option
@@ -71,11 +71,11 @@ module.exports = {
           `${user} a été banni avec succès\n **Raison :** ${reason}`
         )
         .setTimestamp();
-        
-        await member.ban({
-          reason: `Par ${name} : ${reason}`,
-          deleteMessageSeconds: 0,
-        });
+
+      await member.ban({
+        reason: `Par ${name} : ${reason}`,
+        deleteMessageSeconds: 0,
+      });
 
       await interaction.editReply({ embeds: [embed] });
     } catch (error) {
