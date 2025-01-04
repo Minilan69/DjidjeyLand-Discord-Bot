@@ -49,35 +49,70 @@ module.exports = {
       "Pseudo Non Récupérable";
 
     // Verify is not an admin
-    if (member.roles.cache.has("1276506416978464821")) {
+    if (member.roles.cache.has("1276506416978464821")) {$
+      const embed = new EmbedBuilder()
+        .setColor("Red")
+        .setAuthor({
+          name: "MUTE",
+          iconURL: user.displayAvatarURL(),
+        })
+        .setDescription("Vous ne pouvez pas mute un staff")
+        .setTimestamp();
       return interaction.editReply({
-        content: "❌ Vous ne pouvez pas mute un staff",
+        embeds: [embed],
         ephemeral: true,
       });
     }
 
     // Verify if the user is not the bot
     if (member.user.id === interaction.client.user.id) {
-      return interaction.editReply("❌ Vous ne pouvez pas mute le bot");
+      const embed = new EmbedBuilder()
+        .setColor("Red")
+        .setAuthor({
+          name: "MUTE",
+          iconURL: user.displayAvatarURL(),
+        })
+        .setDescription("Vous ne pouvez pas mute le bot")
+        .setTimestamp();
+      return interaction.editReply({
+        embeds: [embed],
+        ephemeral: true,
+      });
     }
 
     // Verify if the user is not the caller
     if (user.id === interaction.user.id) {
+      const embed = new EmbedBuilder()
+        .setColor("Red")
+        .setAuthor({
+          name: "MUTE",
+          iconURL: user.displayAvatarURL(),
+        })
+        .setDescription("Tu ne peux pas te mute toi-même")
+        .setTimestamp();
       return interaction.editReply({
-        content: "❌ Tu ne peux pas te mute toi-même",
+        embeds: [embed],
         ephemeral: true,
       });
     }
 
     // Verify if the user is muted
     if (mute) {
+      const embed = new EmbedBuilder()
+        .setColor("Red")
+        .setAuthor({
+          name: "MUTE",
+          iconURL: user.displayAvatarURL(),
+        })
+        .setDescription(`${user} est déja mute`)
+        .setTimestamp();
       return interaction.editReply({
-        content: "❌ Ce membre est déja mute",
+        embeds: [embed],
         ephemeral: true,
       });
     }
 
-    // Kick User
+    // Mute User
     try {
       member.timeout(time * 60000, `Par ${name} : ${reason}`);
       const embed = new EmbedBuilder()
@@ -95,7 +130,15 @@ module.exports = {
     } catch (error) {
       // Error
       interaction.client.logger.error("Mute", error);
-      await interaction.editReply("❌ Impossible de mute le membre");
+      const embed = new EmbedBuilder()
+        .setColor("Red")
+        .setAuthor({
+          name: "MUTE",
+          iconURL: user.displayAvatarURL(),
+        })
+        .setDescription("Impossible de mute le membre")
+        .setTimestamp();
+      await interaction.editReply({ embeds: [embed] , ephemeral: true});
     }
   },
 };

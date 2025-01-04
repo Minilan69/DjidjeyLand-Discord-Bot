@@ -41,34 +41,69 @@ module.exports = {
 
     // Verify is not an admin
     if (member.roles.cache.has("1276506416978464821")) {
+      const embed = new EmbedBuilder()
+        .setColor("Red")
+        .setAuthor({
+          name: "UNMUTE",
+          iconURL: user.displayAvatarURL(),
+        })
+        .setDescription("Vous ne pouvez pas unmute un staff")
+        .setTimestamp();
       return interaction.editReply({
-        content: "❌ Vous ne pouvez pas unmute un staff",
+        embeds: [embed],
         ephemeral: true,
       });
     }
 
     // Verify if the user is not the bot
     if (member.user.id === interaction.client.user.id) {
-      return interaction.editReply("❌ Vous ne pouvez pas unmute le bot");
+      const embed = new EmbedBuilder()
+        .setColor("Red")
+        .setAuthor({
+          name: "UNMUTE",
+          iconURL: user.displayAvatarURL(),
+        })
+        .setDescription("Vous ne pouvez pas unmute le bot")
+        .setTimestamp();
+      return interaction.editReply({
+        embeds: [embed],
+        ephemeral: true,
+      });
     }
 
     // Verify if the user is not the caller
     if (user.id === interaction.user.id) {
+      const embed = new EmbedBuilder()
+        .setColor("Red")
+        .setAuthor({
+          name: "UNMUTE",
+          iconURL: user.displayAvatarURL(),
+        })
+        .setDescription("Vous ne pouvez pas vous unmute")
+        .setTimestamp();
       return interaction.editReply({
-        content: "❌ Tu ne peux pas te unmute toi-même",
+        embeds: [embed],
         ephemeral: true,
       });
     }
 
     // Verify if the user is muted
     if (!time) {
+      const embed = new EmbedBuilder()
+        .setColor("Red")
+        .setAuthor({
+          name: "UNMUTE",
+          iconURL: user.displayAvatarURL(),
+        })
+        .setDescription("Ce membre n'est pas mute")
+        .setTimestamp();
       return interaction.editReply({
-        content: "❌ Ce membre n'est pas mute",
+        embeds: [embed],
         ephemeral: true,
       });
     }
 
-    // Kick User
+    // Unmute User
     try {
       member.timeout(null, `Par ${name} : ${reason}`);
       const embed = new EmbedBuilder()
@@ -86,7 +121,14 @@ module.exports = {
     } catch (error) {
       // Error
       interaction.client.logger.error("Unmute", error);
-      await interaction.editReply("❌ Impossible de unmute le membre");
+      const embed = new EmbedBuilder()
+        .setColor("Red")
+        .setAuthor({
+          name: "UNMUTE",
+          iconURL: user.displayAvatarURL(),
+        })
+        .setDescription("Impossible de unmute le membre")
+      await interaction.editReply({embeds: [embed], ephemeral: true});
     }
   },
 };
