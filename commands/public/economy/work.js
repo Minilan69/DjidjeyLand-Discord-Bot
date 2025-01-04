@@ -34,6 +34,7 @@ module.exports = {
       const timePassed = Date.now() - lastWork;
       const cooldown = ms(time);
 
+
       if (timePassed < cooldown) {
         let remainingTime = ms(cooldown - timePassed, { long: true });
         remainingTime = remainingTime
@@ -67,7 +68,7 @@ module.exports = {
 
       // Log
       const logChannel = interaction.guild.channels.cache.get(log);
-      if (logChannel && amount != 0) {
+      if (logChannel) {
         logChannel.send({
           embeds: [
             new EmbedBuilder()

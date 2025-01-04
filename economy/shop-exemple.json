@@ -1,20 +1,29 @@
 {
   "name": "Nom dans le shop",
+  "id": 0,
   "description": "Description dans le shop",
-  "price": 150,
+  "price": 0,
+  "quantity": 0,
+  "maxQuantity": 0,
+  "_commentQuantity": "Vous pouvez les enlever si vous ne voulez pas de limite de quantité",
   "requiredRole": "id du role requis",
+  "requiredItem": "id de l'item requis",
   "actions": [
     {
       "type": "assignRole",
       "roleId": "id du role a donner"
     },
     {
-        "type": "removeRole",
-        "roleId": "id du role a enlever"
+      "type": "removeRole",
+      "roleId": "id du role a enlever"
     },
     {
       "type": "sendMessage",
       "content": "le message que tu veux, pour les retour a la ligne : \n"
+    },
+    {
+      "type": "addMoney",
+      "amount": 0
     }
   ]
 }

@@ -1,12 +1,22 @@
-const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
+const {
+  SlashCommandBuilder,
+  EmbedBuilder,
+  PermissionsBitField,
+} = require("discord.js");
 const fs = require("fs");
 const path = require("path");
 const { log } = require("../../../economy/economy-config.json");
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("dl-buy")
-    .setDescription("Achetez un item dans la boutique")
+    .setName("dl-give-item")
+    .setDescription("Donner un item à quelqu'un")
+    .addUserOption((option) =>
+      option
+        .setName("membre")
+        .setDescription("Le membre à qui vous voulez donner l'item")
+        .setRequired(true)
+    )
     .addStringOption((option) => {
       const itemsPath = path.join(__dirname, "../../../economy/shop");
       const itemFiles = fs
@@ -23,25 +33,26 @@ module.exports = {
 
       return option
         .setName("item")
-        .setDescription("Sélectionnez un item à acheter")
+        .setDescription("Sélectionnez un item à donner")
         .setRequired(true);
     })
-    .addNumberOption((option) =>
+    .addIntegerOption((option) =>
       option
         .setName("quantité")
-        .setDescription("Quantité d'item à acheter")
+        .setDescription("Quantité d'item à donner")
         .setRequired(false)
         .setMinValue(1)
-    ),
+    )
+    .setDefaultMemberPermissions(PermissionsBitField.Flags.Administrator),
 
   async execute(interaction) {
     await interaction.deferReply();
-    const user = interaction.user;
-    const userid = interaction.user.id;
+    const user = interaction.options.getUser("membre");
+    const userid = user.id;
     const username = interaction.user.username;
-    const userAvatar = user.displayAvatarURL({ dynamic: true });
+    const userAvatar = interaction.user.displayAvatarURL({ dynamic: true });
 
-    const quantity = interaction.options.getNumber("quantité") || 1;
+    const quantity = interaction.options.getInteger("quantité") || 1;
 
     // Charge selectioned item
     const selectedItemName = interaction.options.getString("item");
@@ -64,16 +75,6 @@ module.exports = {
       }
     }
 
-    // Charge the user's economy data
-    const economyFile = "./economy/economy-data.json";
-    const economyData = JSON.parse(fs.readFileSync(economyFile, "utf-8"));
-    if (!economyData[userid]) {
-      economyData[userid] = { balance: 0};
-    }
-    if (!economyData[userid].inventory) {
-      economyData[userid].inventory = {};
-    }
-
     if (!selectedItem) {
       const embed = new EmbedBuilder()
         .setColor("Red")
@@ -84,6 +85,13 @@ module.exports = {
         .setTimestamp();
 
       return interaction.editReply({ embeds: [embed] });
+    }
+
+    // Charge the user's economy data
+    const economyFile = "./economy/economy-data.json";
+    const economyData = JSON.parse(fs.readFileSync(economyFile, "utf-8"));
+    if (!economyData[userid].inventory) {
+      economyData[userid].inventory = {};
     }
 
     selectedItem.quantity = selectedItem.quantity || -1;
@@ -113,9 +121,9 @@ module.exports = {
         .setColor("Red")
         .setAuthor({ name: username, iconURL: userAvatar })
         .setDescription(
-          `Vous ne pouvez pas en posséder plus de **${
+          `Il ne peux pas en posséder plus de **${
             selectedItem.maxQuantity
-          }** ${selectedItemName}, vous en avez déjà **${
+          }** ${selectedItemName}, il en a déjà **${
             economyData[userid].inventory[selectedItem.id]
           }**`
         )
@@ -130,37 +138,17 @@ module.exports = {
           .setColor("Red")
           .setAuthor({ name: username, iconURL: userAvatar })
           .setDescription(
-            `Vous devez posséder le rôle **${interaction.guild.roles.cache.get(
+            `Il doit posséder le rôle **${interaction.guild.roles.cache.get(
               selectedItem.requiredRole
-            )}** pour acheter **${selectedItemName}**`
+            )}** pour que vous puissiez lui donner **${selectedItemName}**`
           )
           .setTimestamp();
         return interaction.editReply({ embeds: [embed] });
       }
     }
 
-    const userBalance = economyData[userid].balance;
-
-    // Verify if user has enough money
-    if (userBalance < selectedItem.price * quantity) {
-      const embed = new EmbedBuilder()
-        .setColor("Red")
-        .setAuthor({ name: username, iconURL: userAvatar })
-        .setDescription(
-          `Vous n'avez pas assez d'argent pour acheter ${quantity} **${
-            selectedItem.name
-          }**. Il vous faut **${
-            selectedItem.price * quantity
-          }** <:money:1272567139760472205>`
-        )
-        .setTimestamp();
-
-      return interaction.editReply({ embeds: [embed] });
-    }
-
     // Data Update
     economyData[userid].inventory[selectedItem.id] += quantity;
-    economyData[userid].balance -= selectedItem.price * quantity;
     fs.writeFileSync(economyFile, JSON.stringify(economyData));
 
     if (selectedItem.quantity != -1) {
@@ -170,9 +158,7 @@ module.exports = {
 
     const member = interaction.guild.members.cache.get(userid);
 
-    let message = `Vous avez acheté ${quantity} **${selectedItem.name}** pour **${
-      selectedItem.price * quantity
-    }** <:money:1272567139760472205> !`;
+    let message = `Vous avez donner **${quantity} ${selectedItem.name}** à **${user}** !`;
     try {
       for (const action of selectedItem.actions) {
         switch (action.type) {
@@ -199,7 +185,6 @@ module.exports = {
             break;
 
           case "sendMessage":
-            message = action.content;
             break;
 
           case "addBalance":
@@ -227,10 +212,10 @@ module.exports = {
         logChannel.send({
           embeds: [
             new EmbedBuilder()
-              .setColor("Red")
+              .setColor("Blue")
               .setAuthor({ name: username, iconURL: userAvatar })
               .setDescription(
-                `Amount : **-${selectedItem.price}** <:money:1272567139760472205>\n Reason : **Buy ${quantity} ${selectedItem.name}**`
+                `Give : **${quantity} ${selectedItem.name}**\n To : **${user}**`
               )
               .setTimestamp(),
           ],
@@ -238,8 +223,14 @@ module.exports = {
       }
     } catch (error) {
       interaction.client.logger.error("Buy", error);
-      return interaction.editReply(
-        `❌ Une erreur est survenue lors de l'achat de **${quantity} ${selectedItem.name}**. Veuillez réessayer plus tard`
+      embederror = new EmbedBuilder()
+        .setColor("RED")
+        .setAuthor({ name: username, iconURL: userAvatar })
+        .setDescription(
+          `❌ Une erreur est survenue lors du give de **${selectedItem.name}**. Veuillez réessayer plus tard`
+        )
+        .setTimestamp();
+      return interaction.editReply({ embeds: [embederror] }
       );
     }
   },

@@ -1,7 +1,9 @@
 {
   "name": "Étoile 4",
+  "id": 4,
   "description": "**La 4e étoile du serveur !**\n**Avantage :**\n- __Amélioration__ du **/collect-income**\n- __Accès__ aux **archives** du serveur ! Les vieux salons ! \n- __-25%__ sur le **/shop** du __Serveur Survie__",
   "price": 2000,
+  "maxQuantity": 1,
   "requiredRole": "1272631077281730582",
   "actions": [
     {

@@ -22,7 +22,7 @@ module.exports = {
       .setColor("Blue")
       .setTitle("Commandes disponibles")
       .setDescription(
-        "Voici la liste des commandes disponibles pour les modérateurs"
+        "Voici la liste des commandes disponibles"
       )
       .setTimestamp();
 

@@ -53,7 +53,8 @@ module.exports = {
     }
 
     // Item Index
-    const selectedItemName = interaction.options.getString("item") || shopItems[0].name;
+    const selectedItemName =
+      interaction.options.getString("item") || shopItems[0].name;
     const selectedItemIndex = shopItems.findIndex(
       (item) => item.name === selectedItemName
     );
@@ -69,6 +70,11 @@ module.exports = {
     // Generate embed
     const generateEmbed = (page) => {
       const item = shopItems[page - 1];
+      const requiredItemID = item.requiredItem || null;
+      const requiredItem =
+        shopItems.find((shopItem) => shopItem.id === requiredItemID)?.name ||
+        "Aucun";
+      console.log(requiredItem);
       return new EmbedBuilder()
         .setColor("Blue")
         .setTitle(item.name)
@@ -76,12 +82,35 @@ module.exports = {
         .addFields(
           {
             name: "Prix",
-            value: `${item.price} <:money:1272567139760472205>`,
+            value: `${
+              item.price || "Non spécifié"
+            } <:money:1272567139760472205>`,
+            inline: true,
+          },
+          {
+            name: "Stock",
+            value:
+              item.quantity !== undefined
+                ? item.quantity.toString()
+                : "Illimité",
+            inline: true,
+          },
+          {
+            name: "Maximum d'achat",
+            value:
+              item.maxQuantity !== undefined
+                ? item.maxQuantity.toString()
+                : "Illimité",
             inline: true,
           },
           {
             name: "Rôle requis",
             value: item.requiredRole ? `<@&${item.requiredRole}>` : "Aucun",
+            inline: true,
+          },
+          {
+            name: "Item requis",
+            value: requiredItem || "Aucun",
             inline: true,
           }
         )

@@ -1,7 +1,9 @@
 {
   "name": "Étoile 5",
+  "id": 5,
   "description": "**La dernière __vraie__ étoile du serveur !**\n**Avantage :**\n- __Créez__ une **couleur customisée**, pour __vous__ et __seulement vous__.\n- __Créez__ un **émoji de rôle customisée**, pour __vous__ et __seulement vous__.",
   "price": 5000,
+  "maxQuantity": 1,
   "requiredRole": "1272631086886682676",
   "actions": [
     {

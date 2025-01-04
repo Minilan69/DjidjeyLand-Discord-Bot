@@ -1,15 +1,1 @@
-{
-  "name": "Étoile 1",
-  "description": "**La première étoile du serveur !**\n**Avantages :**\n- Accès aux __petits__ GiveaWay\n-# Généralement, ceux qui n'offrent pas de gros prix\n- Accès aux couleurs\n-# Achetez des couleurs !",
-  "price": 25,
-  "actions": [
-    {
-      "type": "assignRole",
-      "roleId": "1272630999548952696"
-    },
-    {
-      "type": "sendMessage",
-      "content": "✨ Félicitation à toi, tu as obtenu(e) ta **première étoile**!\nTu obtiens les récompenses suivantes :\n- Accès à la commande **collect-income** toutes les __23h__ !\n- Accès aux __petits__ GiveAway\n-# Généralement, ceux qui n'offrent pas de gros prix\n- Accès aux couleurs\n-# Achetez des couleurs pour customiser votre profil !"
-    }
-  ]
-}
+{"name":"Étoile 1","id":1,"description":"**La première étoile du serveur !**\n**Avantages :**\n- Accès aux __petits__ GiveaWay\n-# Généralement, ceux qui n'offrent pas de gros prix\n- Accès aux couleurs\n-# Achetez des couleurs !","price":25,"maxQuantity":1,"actions":[{"type":"assignRole","roleId":"1272630999548952696"},{"type":"sendMessage","content":"✨ Félicitation à toi, tu as obtenu(e) ta **première étoile**!\nTu obtiens les récompenses suivantes :\n- Accès à la commande **collect-income** toutes les __23h__ !\n- Accès aux __petits__ GiveAway\n-# Généralement, ceux qui n'offrent pas de gros prix\n- Accès aux couleurs\n-# Achetez des couleurs pour customiser votre profil !"}]}

@@ -66,7 +66,7 @@ module.exports = {
 
       // Log
       const logChannel = interaction.guild.channels.cache.get(log);
-      if (logChannel && money != 0) {
+      if (logChannel) {
         logChannel.send({
           embeds: [
             new EmbedBuilder()
