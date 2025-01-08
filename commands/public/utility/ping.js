@@ -1,5 +1,5 @@
 // Imports
-const { SlashCommandBuilder } = require("discord.js");
+const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 const process = require("process");
 
 // Command
@@ -11,6 +11,12 @@ module.exports = {
     ),
   async execute(interaction) {
     await interaction.deferReply();
+
+    // Variables
+    const user = interaction.options.getUser("membre") || interaction.user;
+    const userName = user.username;
+    const userAvatar = user.displayAvatarURL({ dynamic: true });
+    
     const sent = await interaction.followUp({
       content: "Calcul en cours...",
       fetchReply: true,
@@ -26,15 +32,40 @@ module.exports = {
       const botUptime = formatUptime(process.uptime());
 
       // Message
-      await interaction.editReply(
-        `
-        🔹 **Ping du bot :** ${botLatency}ms\n🔹 **Latence API Discord :** ${apiLatency}ms\n🔹 **Uptime du bot :** ${botUptime}
-        `
+      const embed = new EmbedBuilder()
+        .setColor("Blue")
+        .setAuthor({ name: userName, iconURL: userAvatar })
+        .setTitle("🏓 Pong!")
+        .addFields(
+          {
+            name: `**Ping du bot**`,
+            value: `${botLatency}ms`,
+            inline: true,
+          },
+          {
+            name: `**Latence API Discord**`,
+            value: `${apiLatency}ms`,
+            inline: true,
+          },
+          {
+            name: `**Uptime du bot**`,
+            value: `${botUptime}`,
+            inline: true,
+          }
+        )
+
+        .setTimestamp();
+      await interaction.editReply({ embeds: [embed] }
       );
     } catch (error) {
       // Error
       interaction.client.logger.error("Ping", error);
-      await interaction.editReply("❌ Impossible de ping");
+      const embed = new EmbedBuilder()
+        .setColor("Red")
+        .setAuthor({ name: userName, iconURL: userAvatar })
+        .setDescription("Impossible de ping")
+        .setTimestamp();
+      await interaction.editReply({ embeds: [embed] });
     }
   },
 };

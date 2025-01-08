@@ -7,7 +7,7 @@ const {log} = require("../../../economy/economy-config.json");
 // Command
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("dl-give-money")
+    .setName("dl-donner-argent")
     .setDescription("Permet de donner de l'argent à quelqu'un")
     .addUserOption((option) =>
       option
@@ -42,6 +42,16 @@ module.exports = {
       // Verify if user2 exists
       if (!data[usergiveId]) {
         data[usergiveId] = { balance: 0 };
+      }
+
+      // Verify if user1 is user2
+      if (userId === usergiveId) {
+        const embed = new EmbedBuilder()
+          .setColor("Red")
+          .setAuthor({ name: userName, iconURL: userAvatar })
+          .setDescription("Tu ne peux pas te donner de l'argent à toi-même")
+          .setTimestamp();
+        return await interaction.editReply({ embeds: [embed] });
       }
 
       // Verify if user1 have enough money

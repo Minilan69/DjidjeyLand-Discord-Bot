@@ -9,7 +9,7 @@ const { log } = require("../../../economy/economy-config.json");
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("dl-remove-item")
+    .setName("dl-retirer-item")
     .setDescription("Enlever un item à quelqu'un")
     .addUserOption((option) =>
       option

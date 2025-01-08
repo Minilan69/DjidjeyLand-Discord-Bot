@@ -9,7 +9,7 @@ const { log } = require("../../../economy/economy-config.json");
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("dl-give-item")
+    .setName("dl-ajouter-item")
     .setDescription("Donner un item à quelqu'un")
     .addUserOption((option) =>
       option

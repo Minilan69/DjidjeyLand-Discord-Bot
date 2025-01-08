@@ -6,11 +6,16 @@ const path = require("path");
 // Command
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("dl-help")
+    .setName("dl-aide")
     .setDescription("Affiche la liste des commandes disponibles"),
 
   async execute(interaction) {
     await interaction.deferReply();
+
+    // Variables
+    const user = interaction.options.getUser("membre") || interaction.user;
+    const userName = user.username;
+    const userAvatar = user.displayAvatarURL({ dynamic: true });
 
     const client = interaction.client;
 
@@ -20,10 +25,8 @@ module.exports = {
     // Embed
     const embed = new EmbedBuilder()
       .setColor("Blue")
-      .setTitle("Commandes disponibles")
-      .setDescription(
-        "Voici la liste des commandes disponibles"
-      )
+      .setAuthor({ name: userName, iconURL: userAvatar })
+      .setDescription("Voici la liste des commandes disponibles")
       .setTimestamp();
 
     // View all commands

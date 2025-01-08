@@ -50,9 +50,14 @@ module.exports = {
           .replace("hour", "heure")
           .replace("minutes", "minutes")
           .replace("minute", "minute");
-        return await interaction.editReply(
-          `❌ Vous devez attendre encore **${remainingTime}**`
-        );
+        const embed = new EmbedBuilder()
+          .setColor("Red")
+          .setAuthor({ name: userName, iconURL: userAvatar })
+          .setDescription(
+            `Vous devez attendre encore **${remainingTime}**`
+          )
+          .setTimestamp();
+        return await interaction.editReply({ embeds: [embed] });
       }
 
       // Choose if user wins or loses
@@ -109,9 +114,14 @@ module.exports = {
       }
     } catch (error) {
       interaction.client.logger.error("Crime", error);
-      await interaction.editReply(
-        "❌ Impossible de commettre un crime pour le moment, veuillez réessayer plus tard"
-      );
+      const embed = new EmbedBuilder()
+        .setColor("Red")
+        .setAuthor({ name: userName, iconURL: userAvatar })
+        .setDescription(
+          "Impossible de commettre un crime pour le moment, veuillez réessayer plus tard"
+        )
+        .setTimestamp();
+      await interaction.editReply({ embeds: [embed] });
     }
   },
 };

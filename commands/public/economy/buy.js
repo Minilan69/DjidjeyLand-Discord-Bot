@@ -5,7 +5,7 @@ const { log } = require("../../../economy/economy-config.json");
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("dl-buy")
+    .setName("dl-acheter")
     .setDescription("Achetez un item dans la boutique")
     .addStringOption((option) => {
       const itemsPath = path.join(__dirname, "../../../economy/shop");

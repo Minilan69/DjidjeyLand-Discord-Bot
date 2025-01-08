@@ -7,7 +7,7 @@ const {log} = require("../../../economy/economy-config.json");
 // Command
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("dl-add-money")
+    .setName("dl-ajouter-argent")
     .setDescription("Ajoute de l'argent à un membre")
     .addUserOption((option) =>
         option

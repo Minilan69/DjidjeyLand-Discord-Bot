@@ -40,9 +40,14 @@ module.exports = {
           .replace("hour", "heure")
           .replace("minutes", "minutes")
           .replace("minute", "minute");
-        return await interaction.editReply(
-          `❌ Vous devez attendre encore **${remainingTime}**`
-        );
+        const embed = new EmbedBuilder()
+          .setColor("Red")
+          .setAuthor({ name: userName, iconURL: userAvatar })
+          .setDescription(
+            `Vous devez attendre encore **${remainingTime}**`
+          )
+          .setTimestamp();
+        return await interaction.editReply({ embeds: [embed] });
       }
 
       const randomMessage = collectMessages[
@@ -81,9 +86,12 @@ module.exports = {
       }
     } catch (error) {
       interaction.client.logger.error("Collect", error);
-      await interaction.editReply(
-        "❌ Impossible de réclamer votre revenu quotidien"
-      );
+      const embed = new EmbedBuilder()
+        .setColor("Red")
+        .setAuthor({ name: userName, iconURL: userAvatar })
+        .setDescription("Impossible de réclamer votre revenu quotidien")
+        .setTimestamp();
+      await interaction.editReply({ embeds: [embed] });
     }
   },
 };

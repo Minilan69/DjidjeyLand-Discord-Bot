@@ -6,7 +6,7 @@ const dataFile = "./economy/economy-data.json";
 // Command
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("dl-balance")
+    .setName("dl-solde")
     .setDescription("Affiche votre solde ou celui d'un autre membre")
     .addUserOption((option) =>
       option
@@ -43,7 +43,7 @@ module.exports = {
 
       // Embed
       const embed = new EmbedBuilder()
-        .setColor(isPositive ? "Green" : "Red")
+        .setColor(isPositive ? "Blue" : "Red")
         .setAuthor({ name: userName, iconURL: userAvatar })
         .setDescription(message)
         .setTimestamp();

@@ -11,14 +11,19 @@ const path = require("path");
 // Command
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("dl-helpa")
+    .setName("dl-aide-modo")
     .setDescription(
-      "Affiche la liste des commandes disponibles pour les administrateurs"
+      "Affiche la liste des commandes disponibles pour les modérateurs"
     )
-    .setDefaultMemberPermissions(PermissionsBitField.Flags.Administrator),
+    .setDefaultMemberPermissions(PermissionsBitField.Flags.ManageMessages),
 
   async execute(interaction) {
     await interaction.deferReply();
+
+    // Variables
+    const user = interaction.options.getUser("membre") || interaction.user;
+    const userName = user.username;
+    const userAvatar = user.displayAvatarURL({ dynamic: true });
 
     const client = interaction.client;
 
@@ -28,10 +33,8 @@ module.exports = {
     // Embed
     const embed = new EmbedBuilder()
       .setColor("Blue")
-      .setTitle("Commandes disponibles")
-      .setDescription(
-        "Voici la liste des commandes disponibles pour les administrateurs"
-      )
+      .setAuthor({ name: userName, iconURL: userAvatar })
+      .setDescription("Voici la liste des commandes disponibles")
       .setTimestamp();
 
     // View all commands
@@ -53,7 +56,7 @@ module.exports = {
             fieldValue += `\`/${command.data.name}\` - ${command.data.description}\n`;
           } else {
             client.logger.warn(
-              "HelpA",
+              "HelpM",
               `[❗WARNING] ${filePath} missing property`
             );
           }

@@ -10,8 +10,8 @@ const path = require("path");
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("dl-shop")
-    .setDescription("Affiche le shop")
+    .setName("dl-boutique")
+    .setDescription("Affiche la boutique")
     .addStringOption((option) => {
       const itemsPath = path.join(__dirname, "../../../economy/shop");
       const itemFiles = fs
@@ -35,6 +35,11 @@ module.exports = {
   async execute(interaction) {
     await interaction.deferReply();
 
+    // Variables
+    const user = interaction.options.getUser("membre") || interaction.user;
+    const userName = user.username;
+    const userAvatar = user.displayAvatarURL({ dynamic: true });
+
     // Load items
     const shopItemsPath = path.join(__dirname, "../../../economy/shop");
     const shopItems = fs
@@ -47,9 +52,12 @@ module.exports = {
       });
 
     if (shopItems.length === 0) {
-      return interaction.editReply(
-        "Aucun article n'est disponible dans la boutique !"
-      );
+      const embed = new EmbedBuilder()
+        .setColor("Blue")
+        .setAuthor({ name: userName, iconURL: userAvatar })
+        .setDescription("Aucun article n'est disponible dans la boutique")
+        .setTimestamp();
+      return interaction.editReply({ embeds: [embed] });
     }
 
     // Item Index
@@ -77,6 +85,7 @@ module.exports = {
       console.log(requiredItem);
       return new EmbedBuilder()
         .setColor("Blue")
+        .setAuthor({ name: userName, iconURL: userAvatar })
         .setTitle(item.name)
         .setDescription(item.description)
         .addFields(
@@ -147,10 +156,12 @@ module.exports = {
 
     collector.on("collect", async (buttonInteraction) => {
       if (buttonInteraction.user.id !== interaction.user.id) {
-        return buttonInteraction.reply({
-          content: "Vous ne pouvez pas interagir avec ce menu",
-          ephemeral: true,
-        });
+        const embed = new EmbedBuilder()
+          .setColor("Red")
+          .setAuthor({ name: userName, iconURL: userAvatar })
+          .setDescription("Vous ne pouvez pas interagir avec ce menu")
+          .setTimestamp();
+        return buttonInteraction.reply({ embeds: [embed], ephemeral: true });
       }
 
       // Get the button interaction
