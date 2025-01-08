@@ -96,7 +96,7 @@ client
     logger.ok("Index", "Connected");
   })
   .catch((err) => {
-    logger.err("Index", "Error connecting");
-    logger.err("Index", err);
+    logger.error("Index", "Error connecting");
+    logger.error("Index", err);
     process.exit(1);
   });

@@ -26,7 +26,7 @@ module.exports = {
     const userAvatar = user.displayAvatarURL({ dynamic: true });
     const data = JSON.parse(fs.readFileSync(dataFile));
 
-    // Vérification de l'existence des données de l'utilisateur
+    // Verify if items exists
     if (!data[userId] || !data[userId].inventory) {
       const embed = new EmbedBuilder()
         .setColor("Blue")
@@ -44,7 +44,7 @@ module.exports = {
 
     const inventory = data[userId].inventory;
 
-    // Créer l'embed
+    // Embed
     const embed = new EmbedBuilder()
       .setColor("Blue")
       .setAuthor({ name: userName, iconURL: userAvatar })
@@ -57,21 +57,19 @@ module.exports = {
 
     let hasItems = false;
 
-    // Ajouter les items dans l'inventaire
     for (const [itemId, quantity] of Object.entries(inventory)) {
-      if (quantity <= 0) continue; // Ignorer les items avec une quantité de 0
+      if (quantity <= 0) continue;
 
-      // Trouver le fichier correspondant à l'item
+      // Finc Files
       const itemFiles = fs.readdirSync(itemsDirectory);
       const itemFile = itemFiles.find((file) => {
         const itemData = JSON.parse(
           fs.readFileSync(path.join(itemsDirectory, file))
         );
-        return itemData.id === parseInt(itemId, 10); // Comparer les ID
+        return itemData.id === parseInt(itemId, 10);
       });
 
       if (!itemFile) {
-        // Si le fichier de l'item n'existe pas, ignorer
         continue;
       }
 
@@ -87,7 +85,7 @@ module.exports = {
       hasItems = true;
     }
 
-    // Vérification si l'inventaire contient des items valides
+    // Verify If All Items Have 0
     if (!hasItems) {
       const embed = new EmbedBuilder()
         .setColor("Blue")

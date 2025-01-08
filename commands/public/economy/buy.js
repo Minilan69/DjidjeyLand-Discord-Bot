@@ -139,6 +139,36 @@ module.exports = {
       }
     }
 
+    // Check if the user has the required item
+    console.log(selectedItem.requiredItem);
+    if (selectedItem.requiredItem) {
+      const userRequiredItem =
+        economyData[userid].inventory[selectedItem.requiredItem] || 0;
+      console.log(userRequiredItem);
+      if (userRequiredItem < 1) {
+        // Find Name Of Item
+        const itemFiles = fs.readdirSync("./economy/shop/");
+        const itemFile = itemFiles.find((file) => {
+          const itemData = JSON.parse(
+            fs.readFileSync(path.join("./economy/shop/", file))
+          );
+          return itemData.id === parseInt(selectedItem.requiredItem, 10); // Comparer les ID
+        });
+        
+        const itemData = JSON.parse(
+          fs.readFileSync(path.join("./economy/shop/", itemFile))
+        );
+        const embed = new EmbedBuilder()
+          .setColor("Red")
+          .setAuthor({ name: username, iconURL: userAvatar })
+          .setDescription(
+            `Vous devez posséder l'item **${itemData.name}** pour acheter **${selectedItemName}**`
+          )
+          .setTimestamp();
+        return interaction.editReply({ embeds: [embed] });
+      }
+    }
+
     const userBalance = economyData[userid].balance;
 
     // Verify if user has enough money
